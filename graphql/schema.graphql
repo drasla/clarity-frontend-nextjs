@@ -1,0 +1,113 @@
+# This file was generated. Do not edit manually.
+
+schema {
+    query: Query
+    mutation: Mutation
+}
+
+directive @auth on FIELD_DEFINITION
+
+"Directs the executor to defer this fragment when the `if` argument is true or undefined."
+directive @defer(
+    "Deferred when true or undefined."
+    if: Boolean = true,
+    "Unique name"
+    label: String
+) on FRAGMENT_SPREAD | INLINE_FRAGMENT
+
+"Indicates exactly one field must be supplied and this field must not be `null`."
+directive @oneOf on INPUT_OBJECT
+
+type BusinessInfo {
+    bizAddress1: String!
+    bizAddress2: String
+    bizCEO: String!
+    bizItem: String!
+    bizLicenseURL: String
+    bizRegNumber: String!
+    bizType: String!
+    bizZipCode: String!
+}
+
+type Mutation {
+    _empty: String
+    confirmVerification(code: String!, target: String!, type: VerificationType!): Boolean!
+    login(email: String!, password: String!): Token!
+    refreshToken(token: String!): Token!
+    register(input: RegisterInput!): User!
+    requestVerification(target: String!, type: VerificationType!): Boolean!
+    withdraw: Boolean!
+}
+
+type Query {
+    _empty: String
+    me: User
+}
+
+type Token {
+    accessToken: String!
+    refreshToken: String!
+}
+
+type User {
+    agreeEmail: Boolean!
+    agreeSMS: Boolean!
+    bizInfo: BusinessInfo
+    createdAt: Time!
+    email: String!
+    id: ID!
+    landlineNumber: String
+    name: String!
+    phoneNumber: String!
+    role: UserRole!
+    status: UserStatus!
+    type: UserType!
+    updatedAt: Time!
+    username: String!
+}
+
+enum UserRole {
+    ADMIN
+    USER
+}
+
+enum UserStatus {
+    ACTIVE
+    SUSPENDED
+    WITHDRAWN
+}
+
+enum UserType {
+    BUSINESS
+    PERSONAL
+}
+
+enum VerificationType {
+    EMAIL
+    SMS
+}
+
+scalar Time
+
+input BusinessInput {
+    bizAddress1: String!
+    bizAddress2: String
+    bizCEO: String!
+    bizItem: String!
+    bizLicenseURL: String
+    bizRegNumber: String!
+    bizType: String!
+    bizZipCode: String!
+}
+
+input RegisterInput {
+    agreeEmail: Boolean!
+    agreeSMS: Boolean!
+    bizInfo: BusinessInput
+    email: String!
+    landlineNumber: String
+    name: String!
+    password: String!
+    phoneNumber: String!
+    username: String!
+}

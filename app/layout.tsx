@@ -1,6 +1,8 @@
 import { PropsWithChildren } from "react";
 import { Viewport } from "next";
 import "../styles/globals.css";
+import { ApolloProvider } from "@/providers/apollo/apolloProvider";
+import ThemeProvider from "@/providers/theme/themeProvider";
 
 export const viewport: Viewport = {
     width: "device-width",
@@ -9,8 +11,18 @@ export const viewport: Viewport = {
 
 async function RootLayout({ children }: PropsWithChildren) {
     return (
-        <html lang={"ko"}>
-            <body>{children}</body>
+        <html lang={"ko"} suppressHydrationWarning={true}>
+            <body>
+                <ThemeProvider
+                    attribute={"class"}
+                    defaultTheme={"system"}
+                    enableSystem={true}
+                    disableTransitionOnChange={false}>
+                    <ApolloProvider>
+                        {children}
+                    </ApolloProvider>
+                </ThemeProvider>
+            </body>
         </html>
     );
 }

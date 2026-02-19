@@ -1,1 +1,75 @@
 @import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+    --bg-default: #ffffff;
+    --bg-paper: #f9fafb;
+
+    --text-primary: #111827;
+    --text-secondary: #6b7280;
+    --text-disabled: #9ca3af;
+
+    --divider-main: #e5e7eb;
+    --divider-hover: #d1d5db;
+}
+
+.dark {
+    --bg-default: #121212;
+    --bg-paper: #1e1e1e;
+
+    --text-primary: #f3f4f6;
+    --text-secondary: #9ca3af;
+    --text-disabled: #6b7280;
+
+    --divider-main: #374151;
+    --divider-hover: #4b5563;
+}
+
+@theme {
+    --color-background-default: var(--bg-default);
+    --color-background-paper: var(--bg-paper);
+
+    --color-text-primary: var(--text-primary);
+    --color-text-secondary: var(--text-secondary);
+    --color-text-disabled: var(--text-disabled);
+
+    --color-divider-main: var(--divider-main);
+    --color-divider-hover: var(--divider-hover);
+
+    --color-primary-light: #fec768;
+    --color-primary-main: #ffa102;
+    --color-primary-dark: #e58f00;
+    --color-primary-contrast: #111827;
+
+    --color-secondary-light: #ba68c8;
+    --color-secondary-main: #9c27b0;
+    --color-secondary-dark: #7b1fa2;
+    --color-secondary-contrast: #ffffff;
+
+    --color-error-light: #ef5350;
+    --color-error-main: #d32f2f;
+    --color-error-dark: #c62828;
+    --color-error-contrast: #ffffff;
+
+    --color-warning-light: #ff9800;
+    --color-warning-main: #ed6c02;
+    --color-warning-dark: #e65100;
+    --color-warning-contrast: #ffffff;
+
+    --color-info-light: #03a9f4;
+    --color-info-main: #0288d1;
+    --color-info-dark: #01579b;
+    --color-info-contrast: #ffffff;
+
+    --color-success-light: #4caf50;
+    --color-success-main: #2e7d32;
+    --color-success-dark: #1b5e20;
+    --color-success-contrast: #ffffff;
+}
+
+@layer base {
+    body {
+        @apply bg-background-default text-text-primary transition-colors duration-300;
+    }
+}
