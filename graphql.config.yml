@@ -7,8 +7,7 @@ extensions:
       headers:
         user-agent: "WebStorm"
 documents:
-  - "graphql/queries/**/*.graphql"
-  - "graphql/mutations/**/*.graphql"
+  - "graphql/operations/**/*.graphql"
   - "graphql/fragments/**/*.graphql"
   - "actions/**/*.graphql"
 generates:

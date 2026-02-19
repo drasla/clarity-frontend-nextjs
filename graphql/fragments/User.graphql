@@ -1,0 +1,30 @@
+fragment User on User {
+    id
+    createdAt
+    updatedAt
+    username
+    name
+    email
+    phoneNumber
+    landlineNumber
+    role
+    status
+    type
+    agreeEmail
+    agreeSMS
+    bizInfo {
+        ...BusinessInfo
+    }
+}
+
+fragment BusinessInfo on BusinessInfo {
+    bizCEO
+    bizRegNumber
+    bizType
+    bizItem
+    bizZipCode
+    bizAddress1
+    bizAddress2
+    bizLicenseURL
+}
+
