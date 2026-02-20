@@ -1,4 +1,4 @@
-import { forwardRef, InputHTMLAttributes, useId } from "react";
+import { forwardRef, SelectHTMLAttributes, useId } from "react";
 import { twMerge } from "tailwind-merge";
 import {
     StylesColorType,
@@ -6,40 +6,50 @@ import {
     StylesSizeClasses,
     StylesSizeType,
 } from "@/components/ui/common";
+import { IoChevronDown } from "react-icons/io5";
 
-export interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "size"> {
+export interface SelectOption {
+    label: string;
+    value: string | number;
+}
+
+export interface SelectProps extends Omit<
+    SelectHTMLAttributes<HTMLSelectElement>,
+    "size" | "color"
+> {
     label?: string;
     size?: StylesSizeType;
     color?: StylesColorType;
     error?: boolean;
     helperText?: string;
     fullWidth?: boolean;
+    options?: SelectOption[];
 }
 
-export const Input = forwardRef<HTMLInputElement, InputProps>(
+export const Select = forwardRef<HTMLSelectElement, SelectProps>(
     (
         {
             label,
             size = "medium",
             color = "primary",
-            error,
+            error = false,
             helperText,
             fullWidth = false,
+            options,
+            children,
             className,
             id,
+            required = true,
             ...props
         },
         ref,
     ) => {
         const generatedId = useId();
-        const inputId = id || generatedId;
+        const selectId = id || generatedId;
         const activeColor = error ? "error" : color;
 
-        const legendWidthClass = label
-            ? twMerge([
-                  "peer-focus:[&>legend]:max-w-full",
-                  "peer-[:not(:placeholder-shown)]:[&>legend]:max-w-full",
-              ])
+        const selectLegendWidthClass = label
+            ? twMerge(["peer-focus:[&>legend]:max-w-full", "peer-valid:[&>legend]:max-w-full"])
             : "";
 
         return (
@@ -48,20 +58,28 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
                     ["flex", "flex-col", "gap-1"],
                     fullWidth ? "w-full" : ["inline-flex", "w-fit", "min-w-50"],
                 )}>
-                <div className={"relative"}>
-                    <input
-                        id={inputId}
+                <div className="relative">
+                    <select
+                        id={selectId}
                         ref={ref}
-                        placeholder={" "}
+                        required={required}
                         className={twMerge(
-                            ["relative", "peer", "z-10", "w-full"],
+                            ["relative", "peer", "z-10", "w-full", "appearance-none", "pr-10"],
                             ["rounded-md", "bg-transparent", "outline-none", "border-none"],
                             ["transition-all", "duration-200"],
                             StylesSizeClasses[size],
                             className,
                         )}
-                        {...props}
-                    />
+                        {...props}>
+                        <option value="" disabled hidden></option>
+                        {options
+                            ? options.map(opt => (
+                                  <option key={opt.value} value={opt.value}>
+                                      {opt.label}
+                                  </option>
+                              ))
+                            : children}
+                    </select>
 
                     <fieldset
                         aria-hidden="true"
@@ -71,7 +89,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
                             ["transition-colors", "duration-200"],
                             "peer-focus:border-2",
                             StylesFieldColorClasses[activeColor].field,
-                            legendWidthClass,
+                            selectLegendWidthClass, // 💡 Select 전용 노치 클래스 적용
                         )}>
                         <legend
                             className={twMerge([
@@ -85,17 +103,26 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
                         </legend>
                     </fieldset>
 
+                    <div
+                        className={twMerge(
+                            ["absolute", "inset-y-0", "right-0", "z-20"],
+                            ["flex", "items-center", "px-3", "text-text-secondary"],
+                            ["pointer-events-none"],
+                        )}>
+                        <IoChevronDown className="h-4 w-4" />
+                    </div>
+
                     {label && (
                         <label
-                            htmlFor={inputId}
+                            htmlFor={selectId}
                             className={twMerge(
-                                ["absolute", "left-3", "origin-left", "cursor-text"],
+                                ["absolute", "left-3", "origin-left", "cursor-pointer"],
                                 ["px-1", "pointer-events-none", "z-20"],
                                 ["transition-all", "duration-200", "scale-75", "-translate-y-1/2"],
                                 [
-                                    "peer-placeholder-shown:top-1/2",
-                                    "peer-placeholder-shown:-translate-y-1/2",
-                                    "peer-placeholder-shown:scale-100",
+                                    "peer-invalid:top-1/2",
+                                    "peer-invalid:-translate-y-1/2",
+                                    "peer-invalid:scale-100",
                                 ],
                                 [
                                     "top-0",
@@ -110,11 +137,12 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
                         </label>
                     )}
                 </div>
+
                 {helperText && (
                     <span
                         className={twMerge(
-                            ["mx-3", "text-xs"],
-                            error ? ["text-red-500"] : ["text-gray-500", "dark:text-gray-400"],
+                            "mx-3 text-xs",
+                            activeColor === "error" ? "text-error-main" : "text-text-secondary",
                         )}>
                         {helperText}
                     </span>
@@ -124,4 +152,4 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     },
 );
 
-Input.displayName = "Input";
+Select.displayName = "Select";

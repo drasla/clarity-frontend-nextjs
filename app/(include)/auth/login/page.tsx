@@ -8,7 +8,7 @@ function LoginPage() {
     return (
         <div
             className={twMerge(
-                ["w-full", "max-w-sm", "h-[calc(100dvh-70px)]", "mx-auto", "px-3"],
+                ["w-full", "max-w-sm", "min-h-[calc(100dvh-70px)]", "mx-auto", "px-3", "py-10"],
                 ["flex", "flex-col", "justify-center", "items-center", "gap-5"],
             )}>
             <Image
