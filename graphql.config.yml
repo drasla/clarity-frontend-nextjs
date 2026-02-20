@@ -15,7 +15,7 @@ generates:
     plugins:
       - "typescript"
       - add:
-          content: 'import {Int64, Decimal, GormID, ObjectID, Token, Time} from "./scalars";'
+          content: 'import { Time, Upload } from "./scalars";'
   graphql/graphql.generated.ts:
     preset: "import-types-preset"
     presetConfig:
@@ -24,12 +24,10 @@ generates:
       - "typescript-operations"
       - "typed-document-node"
       - add:
-          content: 'import {Int64, Decimal, GormID, ObjectID, Token, Time} from "./scalars";'
+          content: 'import { Time, Upload } from "./scalars";'
     config:
+      documentMode: "documentNode"
+      importDocumentNodeExternallyFrom: "@apollo/client"
       scalars:
-        Int64: Int64
-        Decimal: Decimal
-        GormID: GormID
-        ObjectID: ObjectID
-        Token: Token
         Time: Time
+        Upload: Upload

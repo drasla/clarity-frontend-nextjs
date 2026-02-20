@@ -414,7 +414,7 @@ function RegisterPage() {
                     <div className="w-full text-center text-xs">
                         <Link href={"/auth/login"}>
                             이미 계정이 있으신가요?{" "}
-                            <span className="font-bold text-primary-main">로그인</span>
+                            <span className="font-bold text-primary-dark">로그인</span>
                         </Link>
                     </div>
                 </div>

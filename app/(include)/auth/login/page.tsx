@@ -24,7 +24,7 @@ function LoginPage() {
             <div className={twMerge(["w-full", "flex", "justify-between"], "text-xs")}>
                 <Link href={"/auth/register"}>
                     아직 회원이 아니신가요?{" "}
-                    <span className={twMerge(["font-bold", "text-primary-main"])}>회원가입</span>
+                    <span className={twMerge(["font-bold", "text-primary-dark"])}>회원가입</span>
                 </Link>
                 <Link href={"/auth/find"}>아이디/비밀번호 찾기</Link>
             </div>

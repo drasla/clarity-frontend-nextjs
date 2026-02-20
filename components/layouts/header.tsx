@@ -6,7 +6,7 @@ function Header() {
     return (
         <div
             className={twMerge(
-                ["sticky", "top-0", "w-full", "h-15"],
+                ["sticky", "top-0", "w-full", "h-15", "backdrop-blur-xl", "z-30"],
                 ["flex", "justify-center"],
                 ["border-b", "border-gray-300"],
             )}>

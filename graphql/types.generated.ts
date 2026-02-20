@@ -1,4 +1,5 @@
-import {Int64, Decimal, GormID, ObjectID, Token, Time} from "./scalars";
+import { Time, Upload } from "./scalars";
+
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -14,6 +15,7 @@ export type Scalars = {
   Int: { input: number; output: number; }
   Float: { input: number; output: number; }
   Time: { input: any; output: any; }
+  Upload: { input: any; output: any; }
 };
 
 export type BusinessInfo = {
@@ -39,6 +41,12 @@ export type BusinessInput = {
   bizZipCode: Scalars['String']['input'];
 };
 
+export type FileInfo = {
+  __typename?: 'FileInfo';
+  fileName: Scalars['String']['output'];
+  url: Scalars['String']['output'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   _empty?: Maybe<Scalars['String']['output']>;
@@ -47,6 +55,7 @@ export type Mutation = {
   refreshToken: Token;
   register: User;
   requestVerification: Scalars['Boolean']['output'];
+  uploadFile: FileInfo;
   withdraw: Scalars['Boolean']['output'];
 };
 
@@ -77,6 +86,12 @@ export type MutationRegisterArgs = {
 export type MutationRequestVerificationArgs = {
   target: Scalars['String']['input'];
   type: VerificationType;
+};
+
+
+export type MutationUploadFileArgs = {
+  directory?: InputMaybe<Scalars['String']['input']>;
+  file: Scalars['Upload']['input'];
 };
 
 export type Query = {
