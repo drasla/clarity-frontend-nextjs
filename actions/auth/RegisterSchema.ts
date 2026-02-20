@@ -27,6 +27,7 @@ const businessSchema = baseSchema.extend({
         bizZipCode: z.string().min(1, "우편번호를 입력해주세요."),
         bizAddress1: z.string().min(1, "기본 주소를 입력해주세요."),
         bizAddress2: z.string().optional(),
+        bizLicenseURL: z.string().optional(),
     }),
 });
 

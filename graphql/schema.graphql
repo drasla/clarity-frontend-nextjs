@@ -29,6 +29,11 @@ type BusinessInfo {
     bizZipCode: String!
 }
 
+type FileInfo {
+    fileName: String!
+    url: String!
+}
+
 type Mutation {
     _empty: String
     confirmVerification(code: String!, target: String!, type: VerificationType!): Boolean!
@@ -36,6 +41,7 @@ type Mutation {
     refreshToken(token: String!): Token!
     register(input: RegisterInput!): User!
     requestVerification(target: String!, type: VerificationType!): Boolean!
+    uploadFile(directory: String, file: Upload!): FileInfo!
     withdraw: Boolean!
 }
 
@@ -88,6 +94,8 @@ enum VerificationType {
 }
 
 scalar Time
+
+scalar Upload
 
 input BusinessInput {
     bizAddress1: String!

@@ -12,14 +12,41 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { RegisterFormSchema, RegisterFormValues } from "@/actions/auth/RegisterSchema";
 import { RegisterAction } from "@/actions/auth/RegisterAction";
+import { UploadFileAction } from "@/actions/file/UploadAction";
+import { ChangeEvent, MouseEvent, useRef, useState } from "react";
+import {
+    AutoFormatBizRegNum,
+    AutoFormatLandlineNumber,
+    AutoFormatPhoneNumber,
+} from "@/utils/formatting/formatting";
+import { IoCloseCircle } from "react-icons/io5";
+import { AddressSearchModal } from "@/components/ui/modal/AddressSearchModal";
+import { AlertModal, AlertType } from "@/components/ui/modal/AlertModal";
 
 function RegisterPage() {
     const router = useRouter();
+    const fileInputRef = useRef<HTMLInputElement>(null);
+    const [bizFile, setBizFile] = useState<File | null>(null);
+    const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
+    const [alertConfig, setAlertConfig] = useState<{
+        isOpen: boolean;
+        type: AlertType;
+        title: string;
+        message: string;
+        onClose: VoidFunction;
+    }>({
+        isOpen: false,
+        type: "none",
+        title: "",
+        message: "",
+        onClose: () => {},
+    });
 
     const {
         register,
         handleSubmit,
         watch,
+        setValue,
         formState: { errors, isSubmitting },
     } = useForm<RegisterFormValues>({
         resolver: zodResolver(RegisterFormSchema),
@@ -32,15 +59,59 @@ function RegisterPage() {
 
     const currentUserType = watch("userType");
 
+    const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+
+        setBizFile(file);
+
+        if (fileInputRef.current) fileInputRef.current.value = "";
+    };
+
+    const handleClearFile = (e: MouseEvent) => {
+        e.stopPropagation();
+        setBizFile(null);
+        if (fileInputRef.current) fileInputRef.current.value = "";
+    };
+
     const onSubmit = async (data: RegisterFormValues) => {
         try {
+            if (data.userType === UserType.Business && bizFile) {
+                const uploadResult = await UploadFileAction({
+                    file: bizFile,
+                    directory: "user/license",
+                });
+                if (data.bizInfo) {
+                    data.bizInfo.bizLicenseURL = uploadResult.url;
+                }
+            }
             await RegisterAction(data);
-            alert("회원가입이 완료되었습니다.");
-            router.push("/auth/login");
+            setAlertConfig({
+                isOpen: true,
+                type: "success",
+                title: "회원가입 완료",
+                message: "성공적으로 회원가입이 완료되었습니다.\n로그인 페이지로 이동합니다.",
+                onClose: () => {
+                    setAlertConfig(prev => ({ ...prev, isOpen: false }));
+                    router.push("/auth/login");
+                },
+            });
         } catch (error: any) {
-            alert(error.message || "회원가입 중 오류가 발생했습니다.");
+            setAlertConfig({
+                isOpen: true,
+                type: "error",
+                title: "가입 실패",
+                message: error.message || "회원가입 중 일시적인 오류가 발생했습니다.",
+                onClose: () => {
+                    setAlertConfig(prev => ({ ...prev, isOpen: false }));
+                },
+            });
         }
     };
+
+    const phoneReg = register("phoneNumber");
+    const bizRegNumReg = register("bizInfo.bizRegNumber");
+    const landlineReg = register("landlineNumber");
 
     return (
         <div
@@ -140,7 +211,11 @@ function RegisterPage() {
                             fullWidth
                             error={!!errors.phoneNumber}
                             helperText={errors.phoneNumber?.message}
-                            {...register("phoneNumber")}
+                            {...phoneReg}
+                            onChange={e => {
+                                e.target.value = AutoFormatPhoneNumber(e.target.value);
+                                phoneReg.onChange(e).then(() => {});
+                            }}
                         />
 
                         <div className="md:col-span-2">
@@ -150,7 +225,11 @@ function RegisterPage() {
                                 fullWidth
                                 error={!!errors.landlineNumber}
                                 helperText={errors.landlineNumber?.message}
-                                {...register("landlineNumber")}
+                                {...landlineReg}
+                                onChange={e => {
+                                    e.target.value = AutoFormatLandlineNumber(e.target.value);
+                                    landlineReg.onChange(e).then(() => {});
+                                }}
                             />
                         </div>
                     </div>
@@ -191,13 +270,59 @@ function RegisterPage() {
                                 <Input
                                     label="사업자등록번호"
                                     fullWidth
-                                    helperText={
-                                        (errors as any).bizInfo?.bizRegNumber?.message ||
-                                        "- 없이 입력해주세요."
-                                    }
+                                    helperText={(errors as any).bizInfo?.bizRegNumber?.message}
                                     error={!!(errors as any).bizInfo?.bizRegNumber}
-                                    {...register("bizInfo.bizRegNumber")}
+                                    {...bizRegNumReg}
+                                    onChange={e => {
+                                        e.target.value = AutoFormatBizRegNum(e.target.value);
+                                        bizRegNumReg.onChange(e).then(_ => {});
+                                    }}
                                 />
+                            </div>
+
+                            <div className="md:col-span-2 flex gap-2 items-start">
+                                <div
+                                    className="flex-1 cursor-pointer relative"
+                                    onClick={() => fileInputRef.current?.click()}>
+                                    <Input
+                                        label="사업자등록증"
+                                        fullWidth
+                                        readOnly
+                                        value={bizFile ? bizFile.name : ""}
+                                        className={twMerge("cursor-pointer", bizFile && "pr-10")}
+                                        error={!!(errors as any).bizInfo?.bizLicenseURL}
+                                        helperText={(errors as any).bizInfo?.bizLicenseURL?.message}
+                                    />
+
+                                    {bizFile && (
+                                        <button
+                                            type="button"
+                                            onClick={handleClearFile}
+                                            className="absolute right-3 top-0 h-11.5 flex items-center justify-center text-text-secondary hover:text-error-main z-30 transition-colors"
+                                            title="파일 삭제">
+                                            <IoCloseCircle className="w-5 h-5" />
+                                        </button>
+                                    )}
+                                </div>
+
+                                <input
+                                    type="file"
+                                    ref={fileInputRef}
+                                    className="hidden"
+                                    accept="image/*,.pdf"
+                                    onChange={handleFileChange}
+                                />
+
+                                <Button
+                                    type="button"
+                                    variant="outlined"
+                                    color={bizFile ? "success" : "primary"}
+                                    size="medium"
+                                    className="whitespace-nowrap h-11.5"
+                                    onClick={() => fileInputRef.current?.click()}
+                                    disabled={isSubmitting}>
+                                    {bizFile ? "다시 첨부" : "파일 첨부"}
+                                </Button>
                             </div>
 
                             <Input
@@ -220,9 +345,12 @@ function RegisterPage() {
                                     <Input
                                         label="우편번호"
                                         fullWidth
+                                        readOnly
+                                        className="cursor-pointer"
                                         error={!!(errors as any).bizInfo?.bizZipCode}
                                         helperText={(errors as any).bizInfo?.bizZipCode?.message}
                                         {...register("bizInfo.bizZipCode")}
+                                        onClick={() => setIsAddressModalOpen(true)}
                                     />
                                 </div>
                                 <Button
@@ -230,7 +358,8 @@ function RegisterPage() {
                                     variant="outlined"
                                     color="primary"
                                     size="medium"
-                                    className="whitespace-nowrap h-11.5">
+                                    className="whitespace-nowrap h-11.5"
+                                    onClick={() => setIsAddressModalOpen(true)}>
                                     주소 검색
                                 </Button>
                             </div>
@@ -239,6 +368,7 @@ function RegisterPage() {
                                 <Input
                                     label="기본 주소"
                                     fullWidth
+                                    readOnly
                                     error={!!(errors as any).bizInfo?.bizAddress1}
                                     helperText={(errors as any).bizInfo?.bizAddress1?.message}
                                     {...register("bizInfo.bizAddress1")}
@@ -289,6 +419,24 @@ function RegisterPage() {
                     </div>
                 </div>
             </form>
+
+            <AddressSearchModal
+                isOpen={isAddressModalOpen}
+                onClose={() => setIsAddressModalOpen(false)}
+                onComplete={data => {
+                    setValue("bizInfo.bizZipCode", data.zipcode, { shouldValidate: true });
+                    setValue("bizInfo.bizAddress1", data.address, { shouldValidate: true });
+                }}
+            />
+
+            <AlertModal
+                isOpen={alertConfig.isOpen}
+                type={alertConfig.type}
+                title={alertConfig.title}
+                message={alertConfig.message}
+                onClose={alertConfig.onClose}
+                buttonText={alertConfig.type === "success" ? "로그인하러 가기" : "확인"}
+            />
         </div>
     );
 }
