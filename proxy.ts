@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-export function middleware(request: NextRequest) {
+function proxy(request: NextRequest) {
     const { pathname } = request.nextUrl;
 
     const accessToken = request.cookies.get("access_token")?.value;
@@ -26,6 +26,8 @@ export function middleware(request: NextRequest) {
 
     return NextResponse.next();
 }
+
+export default proxy;
 
 export const config = {
     matcher: ["/((?!api|_next/static|_next/image|assets|favicon.ico|.*\\.png$).*)"],

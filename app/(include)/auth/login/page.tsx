@@ -63,19 +63,34 @@ function LoginPage() {
                 ["w-full", "max-w-sm", "min-h-[calc(100dvh-70px)]", "mx-auto", "px-3", "py-10"],
                 ["flex", "flex-col", "justify-center", "items-center", "gap-5"],
             )}>
-            <Image
-                src={"/assets/images/logo_goldennet.png"}
-                alt={"Logo"}
-                width={144}
-                height={100}
-                className={twMerge(["mb-10"])}
-            />
-
-            <div className="w-full text-center mb-8">
-                <h1 className="text-2xl font-bold text-text-primary">로그인</h1>
-                <p className="text-sm text-text-secondary mt-2">
-                    서비스 이용을 위해 로그인해주세요.
-                </p>
+            <div
+                className={twMerge(
+                    ["w-full", "mb-5"],
+                    ["flex", "flex-col", "md:flex-row", "gap-5", "md:gap-0"],
+                    ["justify-center", "items-center", "md:justify-between", "md:items-center"],
+                )}>
+                <Image
+                    src={"/assets/images/logo_vertical_light.png"}
+                    alt={"Logo"}
+                    width={90}
+                    height={68}
+                />
+                <div
+                    className={twMerge([
+                        "w-full",
+                        "flex",
+                        "flex-col",
+                        "justify-center",
+                        "items-center",
+                        "md:items-end",
+                    ])}>
+                    <h1 className={twMerge(["text-2xl", "font-bold", "text-text-primary"])}>
+                        로그인
+                    </h1>
+                    <p className={twMerge(["text-sm", "text-text-secondary", "mt-1"])}>
+                        서비스 이용을 위해 로그인해주세요.
+                    </p>
+                </div>
             </div>
 
             <form onSubmit={handleSubmit(onSubmit)} className="w-full flex flex-col gap-5">

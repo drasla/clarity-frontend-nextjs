@@ -117,22 +117,36 @@ function RegisterPage() {
         <div
             className={twMerge(
                 ["w-full", "max-w-2xl", "min-h-[calc(100dvh-70px)]", "mx-auto", "px-3", "py-10"],
-                ["flex", "flex-col", "justify-center", "items-center"],
+                ["flex", "flex-col", "justify-center", "items-center", "gap-5"],
             )}>
-            <Image
-                src={"/assets/images/logo_goldennet.png"}
-                alt={"Logo"}
-                width={144}
-                height={100}
-                className={twMerge(["mb-10"])}
-            />
-            <div className={twMerge(["w-full", "text-center", "mb-4"])}>
-                <h1 className={twMerge(["text-2xl", "font-bold", "text-text-primary"])}>
-                    회원가입
-                </h1>
-                <p className={twMerge(["text-sm", "text-text-secondary", "mt-1"])}>
-                    필요한 정보를 입력해주세요.
-                </p>
+            <div
+                className={twMerge(
+                    ["w-full", "mb-5"],
+                    ["flex", "flex-col", "md:flex-row", "gap-5", "md:gap-0"],
+                    ["justify-center", "items-center", "md:justify-between", "md:items-center"],
+                )}>
+                <Image
+                    src={"/assets/images/logo_vertical_light.png"}
+                    alt={"Logo"}
+                    width={90}
+                    height={68}
+                />
+                <div
+                    className={twMerge([
+                        "w-full",
+                        "flex",
+                        "flex-col",
+                        "justify-center",
+                        "items-center",
+                        "md:items-end",
+                    ])}>
+                    <h1 className={twMerge(["text-2xl", "font-bold", "text-text-primary"])}>
+                        회원가입
+                    </h1>
+                    <p className={twMerge(["text-sm", "text-text-secondary", "mt-1"])}>
+                        필요한 정보를 입력해주세요.
+                    </p>
+                </div>
             </div>
 
             <form

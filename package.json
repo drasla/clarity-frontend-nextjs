@@ -4,7 +4,7 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "dev": "cross-env NODE_OPTIONS='--inspect' PORT=50001 next dev",
+        "dev": "cross-env NODE_OPTIONS='--inspect' PORT=30003 next dev",
         "codegen": "graphql-codegen --config graphql.config.yml",
         "build": "next build"
     },
