@@ -1,5 +1,4 @@
 import { Time, Upload } from "./scalars";
-
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -68,8 +67,8 @@ export type MutationConfirmVerificationArgs = {
 
 
 export type MutationLoginArgs = {
-  email: Scalars['String']['input'];
   password: Scalars['String']['input'];
+  username: Scalars['String']['input'];
 };
 
 

@@ -7,7 +7,7 @@ import {
 } from "@/graphql/graphql.generated";
 import { GraphQLMutation } from "@/providers/apollo/apollo-server";
 import { UserType } from "@/graphql/types.generated";
-import { RegisterFormValues } from "@/actions/auth/RegisterSchema";
+import { RegisterFormValues } from "@/actions/auth/register/RegisterSchema";
 
 export async function RegisterAction(data: RegisterFormValues) {
     const variables: RegisterMutationVariables = {

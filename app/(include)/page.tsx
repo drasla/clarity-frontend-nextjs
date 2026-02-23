@@ -1,5 +1,5 @@
 function RootPage() {
-    return <div>RootPage</div>;
+    return <>RootPage</>;
 }
 
 export default RootPage;

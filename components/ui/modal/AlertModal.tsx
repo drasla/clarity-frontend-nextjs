@@ -1,9 +1,14 @@
 "use client";
 
-import { Player } from "@lottiefiles/react-lottie-player";
 import { Modal } from "@/components/ui/modal/Modal";
 import { Button } from "@/components/ui/button/Button";
 import { twMerge } from "tailwind-merge";
+import dynamic from "next/dynamic";
+
+const LottiePlayer = dynamic(
+    () => import("@lottiefiles/react-lottie-player").then(mod => mod.Player),
+    { ssr: false },
+);
 
 export type AlertType = "success" | "error" | "warning" | "none";
 
@@ -38,7 +43,7 @@ export const AlertModal = ({
                 )}>
                 {type !== "none" && LOTTIE_MAP[type] && (
                     <div className="w-32 h-32 mb-4">
-                        <Player
+                        <LottiePlayer
                             autoplay
                             keepLastFrame
                             src={LOTTIE_MAP[type]}

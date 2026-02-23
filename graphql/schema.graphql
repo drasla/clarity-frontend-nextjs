@@ -37,7 +37,7 @@ type FileInfo {
 type Mutation {
     _empty: String
     confirmVerification(code: String!, target: String!, type: VerificationType!): Boolean!
-    login(email: String!, password: String!): Token!
+    login(password: String!, username: String!): Token!
     refreshToken(token: String!): Token!
     register(input: RegisterInput!): User!
     requestVerification(target: String!, type: VerificationType!): Boolean!

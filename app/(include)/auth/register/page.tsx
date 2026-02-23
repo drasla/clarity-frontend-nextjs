@@ -10,8 +10,8 @@ import { Select } from "@/components/ui/select/Select";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-import { RegisterFormSchema, RegisterFormValues } from "@/actions/auth/RegisterSchema";
-import { RegisterAction } from "@/actions/auth/RegisterAction";
+import { RegisterFormSchema, RegisterFormValues } from "@/actions/auth/register/RegisterSchema";
+import { RegisterAction } from "@/actions/auth/register/RegisterAction";
 import { UploadFileAction } from "@/actions/file/UploadAction";
 import { ChangeEvent, MouseEvent, useRef, useState } from "react";
 import {
