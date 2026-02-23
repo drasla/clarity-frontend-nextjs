@@ -1,0 +1,22 @@
+query FindManyPublicInquiries($page: PageInput!, $search: InquirySearchInput) {
+    findManyPublicInquiries(page: $page, search: $search) {
+        total
+        size
+        page
+        list {
+            id
+            category
+            title
+            status
+            createdAt
+            phoneNumber
+        }
+    }
+}
+
+mutation CreateInquiry($input: CreateInquiryInput!) {
+    createInquiry(input: $input) {
+        id
+        status
+    }
+}

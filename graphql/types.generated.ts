@@ -13,8 +13,14 @@ export type Scalars = {
   Boolean: { input: boolean; output: boolean; }
   Int: { input: number; output: number; }
   Float: { input: number; output: number; }
+  Int64: { input: any; output: any; }
   Time: { input: any; output: any; }
   Upload: { input: any; output: any; }
+};
+
+export type AnswerInquiryInput = {
+  answer: Scalars['String']['input'];
+  status: InquiryStatus;
 };
 
 export type BusinessInfo = {
@@ -40,22 +46,123 @@ export type BusinessInput = {
   bizZipCode: Scalars['String']['input'];
 };
 
+export type CreateInquiryInput = {
+  attachments?: InputMaybe<Array<FileInput>>;
+  category: InquiryCategory;
+  content: Scalars['String']['input'];
+  domain?: InputMaybe<Scalars['String']['input']>;
+  email: Scalars['String']['input'];
+  nonMemberPw?: InputMaybe<Scalars['String']['input']>;
+  phoneNumber: Scalars['String']['input'];
+  title: Scalars['String']['input'];
+};
+
+export type File = {
+  __typename?: 'File';
+  createdAt: Scalars['Time']['output'];
+  extension: Scalars['String']['output'];
+  id: Scalars['Int']['output'];
+  originalName: Scalars['String']['output'];
+  size: Scalars['Int64']['output'];
+  storedName: Scalars['String']['output'];
+  url: Scalars['String']['output'];
+};
+
 export type FileInfo = {
   __typename?: 'FileInfo';
-  fileName: Scalars['String']['output'];
+  extension: Scalars['String']['output'];
+  originalName: Scalars['String']['output'];
+  size: Scalars['Int64']['output'];
+  storedName: Scalars['String']['output'];
   url: Scalars['String']['output'];
+};
+
+export type FileInput = {
+  extension: Scalars['String']['input'];
+  originalName: Scalars['String']['input'];
+  size: Scalars['Int']['input'];
+  storedName: Scalars['String']['input'];
+  url: Scalars['String']['input'];
+};
+
+export type Inquiry = {
+  __typename?: 'Inquiry';
+  answer?: Maybe<Scalars['String']['output']>;
+  answeredAt?: Maybe<Scalars['Time']['output']>;
+  attachments: Array<File>;
+  category: InquiryCategory;
+  content: Scalars['String']['output'];
+  createdAt: Scalars['Time']['output'];
+  domain?: Maybe<Scalars['String']['output']>;
+  email: Scalars['String']['output'];
+  id: Scalars['Int']['output'];
+  phoneNumber: Scalars['String']['output'];
+  status: InquiryStatus;
+  title: Scalars['String']['output'];
+  updatedAt: Scalars['Time']['output'];
+  userId?: Maybe<Scalars['Int']['output']>;
+};
+
+export enum InquiryCategory {
+  Domain = 'DOMAIN',
+  Email = 'EMAIL',
+  Etc = 'ETC',
+  GoldenShop = 'GOLDEN_SHOP',
+  Hosting = 'HOSTING',
+  Ssl = 'SSL',
+  UserInfo = 'USER_INFO'
+}
+
+export type InquiryList = {
+  __typename?: 'InquiryList';
+  list: Array<Inquiry>;
+  page: Scalars['Int']['output'];
+  size: Scalars['Int']['output'];
+  total: Scalars['Int']['output'];
+};
+
+export type InquirySearchInput = {
+  category?: InputMaybe<InquiryCategory>;
+  domain?: InputMaybe<Scalars['String']['input']>;
+  keyword?: InputMaybe<Scalars['String']['input']>;
+  status?: InputMaybe<InquiryStatus>;
+};
+
+export enum InquiryStatus {
+  Completed = 'COMPLETED',
+  Pending = 'PENDING'
+}
+
+export type ModifyInquiryInput = {
+  attachments?: InputMaybe<Array<FileInput>>;
+  category?: InputMaybe<InquiryCategory>;
+  content?: InputMaybe<Scalars['String']['input']>;
+  domain?: InputMaybe<Scalars['String']['input']>;
+  email?: InputMaybe<Scalars['String']['input']>;
+  phoneNumber?: InputMaybe<Scalars['String']['input']>;
+  title?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type Mutation = {
   __typename?: 'Mutation';
   _empty?: Maybe<Scalars['String']['output']>;
+  answerInquiry: Inquiry;
   confirmVerification: Scalars['Boolean']['output'];
+  createInquiry: Inquiry;
+  deleteInquiry: Scalars['Boolean']['output'];
   login: Token;
+  modifyInquiry: Inquiry;
   refreshToken: Token;
   register: User;
   requestVerification: Scalars['Boolean']['output'];
   uploadFile: FileInfo;
   withdraw: Scalars['Boolean']['output'];
+};
+
+
+export type MutationAnswerInquiryArgs = {
+  id: Scalars['Int']['input'];
+  input: AnswerInquiryInput;
 };
 
 
@@ -66,9 +173,27 @@ export type MutationConfirmVerificationArgs = {
 };
 
 
+export type MutationCreateInquiryArgs = {
+  input: CreateInquiryInput;
+};
+
+
+export type MutationDeleteInquiryArgs = {
+  id: Scalars['Int']['input'];
+  password?: InputMaybe<Scalars['String']['input']>;
+};
+
+
 export type MutationLoginArgs = {
   password: Scalars['String']['input'];
   username: Scalars['String']['input'];
+};
+
+
+export type MutationModifyInquiryArgs = {
+  id: Scalars['Int']['input'];
+  input: ModifyInquiryInput;
+  password?: InputMaybe<Scalars['String']['input']>;
 };
 
 
@@ -93,10 +218,42 @@ export type MutationUploadFileArgs = {
   file: Scalars['Upload']['input'];
 };
 
+export type PageInput = {
+  page?: Scalars['Int']['input'];
+  size?: Scalars['Int']['input'];
+};
+
 export type Query = {
   __typename?: 'Query';
   _empty?: Maybe<Scalars['String']['output']>;
+  findManyInquiriesForAdmin: InquiryList;
+  findManyMyInquiries: InquiryList;
+  findManyPublicInquiries: InquiryList;
+  findOneInquiryById: Inquiry;
   me?: Maybe<User>;
+};
+
+
+export type QueryFindManyInquiriesForAdminArgs = {
+  page: PageInput;
+  search?: InputMaybe<InquirySearchInput>;
+};
+
+
+export type QueryFindManyMyInquiriesArgs = {
+  page: PageInput;
+};
+
+
+export type QueryFindManyPublicInquiriesArgs = {
+  page: PageInput;
+  search?: InputMaybe<InquirySearchInput>;
+};
+
+
+export type QueryFindOneInquiryByIdArgs = {
+  id: Scalars['Int']['input'];
+  password?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type RegisterInput = {

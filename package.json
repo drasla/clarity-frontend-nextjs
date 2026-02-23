@@ -4,7 +4,7 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "dev": "cross-env NODE_OPTIONS='--inspect' PORT=30003 next dev",
+        "dev": "cross-env NODE_OPTIONS='--inspect' PORT=30003 next dev --turbo",
         "codegen": "graphql-codegen --config graphql.config.yml",
         "build": "next build"
     },
@@ -17,6 +17,16 @@
         "@apollo/client-integration-nextjs": "^0.14.4",
         "@hookform/resolvers": "^5.2.2",
         "@lottiefiles/react-lottie-player": "^3.6.0",
+        "@tailwindcss/typography": "^0.5.19",
+        "@tiptap/extension-image": "^3.20.0",
+        "@tiptap/extension-link": "^3.20.0",
+        "@tiptap/extension-placeholder": "^3.20.0",
+        "@tiptap/extension-text-align": "^3.20.0",
+        "@tiptap/extension-text-style": "^3.20.0",
+        "@tiptap/extension-underline": "^3.20.0",
+        "@tiptap/react": "^3.20.0",
+        "@tiptap/starter-kit": "^3.20.0",
+        "@tosspayments/payment-widget-sdk": "^0.12.1",
         "dayjs": "^1.11.19",
         "decimal.js": "^10.6.0",
         "next": "^16.1.6",
@@ -27,7 +37,6 @@
         "react-hook-form": "^7.71.1",
         "react-icons": "^5.5.0",
         "tailwind-merge": "^3.5.0",
-        "tailwindcss-animate": "^1.0.7",
         "zod": "^4.3.6",
         "zustand": "^5.0.11"
     },

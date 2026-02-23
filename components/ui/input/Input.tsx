@@ -1,4 +1,4 @@
-import { forwardRef, InputHTMLAttributes, useId } from "react";
+import { ChangeEvent, forwardRef, InputHTMLAttributes, useId } from "react";
 import { twMerge } from "tailwind-merge";
 import {
     StylesColorType,
@@ -6,6 +6,11 @@ import {
     StylesSizeClasses,
     StylesSizeType,
 } from "@/components/ui/common";
+import {
+    AutoFormatBizRegNum,
+    AutoFormatLandlineNumber,
+    AutoFormatPhoneNumber,
+} from "@/utils/formatting/formatting";
 
 export interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "size"> {
     label?: string;
@@ -14,6 +19,7 @@ export interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 
     error?: boolean;
     helperText?: string;
     fullWidth?: boolean;
+    formatType?: "phone" | "bizRegNum" | "landline";
 }
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
@@ -25,8 +31,10 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             error,
             helperText,
             fullWidth = false,
+            formatType,
             className,
             id,
+            onChange,
             ...props
         },
         ref,
@@ -42,6 +50,23 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
               ])
             : "";
 
+        const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+            if (formatType) {
+                const value = e.target.value;
+                if (formatType === "phone") {
+                    e.target.value = AutoFormatPhoneNumber(value);
+                } else if (formatType === "bizRegNum") {
+                    e.target.value = AutoFormatBizRegNum(value);
+                } else if (formatType === "landline") {
+                    e.target.value = AutoFormatLandlineNumber(value);
+                }
+            }
+
+            if (onChange) {
+                onChange(e);
+            }
+        };
+
         return (
             <div
                 className={twMerge(
@@ -53,6 +78,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
                         id={inputId}
                         ref={ref}
                         placeholder={" "}
+                        onChange={handleChange}
                         className={twMerge(
                             ["relative", "peer", "z-10", "w-full"],
                             ["rounded-md", "bg-transparent", "outline-none", "border-none"],

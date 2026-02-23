@@ -5,6 +5,8 @@ schema {
     mutation: Mutation
 }
 
+directive @admin on FIELD_DEFINITION
+
 directive @auth on FIELD_DEFINITION
 
 "Directs the executor to defer this fragment when the `if` argument is true or undefined."
@@ -29,15 +31,56 @@ type BusinessInfo {
     bizZipCode: String!
 }
 
-type FileInfo {
-    fileName: String!
+type File {
+    createdAt: Time!
+    extension: String!
+    id: Int!
+    originalName: String!
+    size: Int64!
+    storedName: String!
     url: String!
+}
+
+type FileInfo {
+    extension: String!
+    originalName: String!
+    size: Int64!
+    storedName: String!
+    url: String!
+}
+
+type Inquiry {
+    answer: String
+    answeredAt: Time
+    attachments: [File!]!
+    category: InquiryCategory!
+    content: String!
+    createdAt: Time!
+    domain: String
+    email: String!
+    id: Int!
+    phoneNumber: String!
+    status: InquiryStatus!
+    title: String!
+    updatedAt: Time!
+    userId: Int
+}
+
+type InquiryList {
+    list: [Inquiry!]!
+    page: Int!
+    size: Int!
+    total: Int!
 }
 
 type Mutation {
     _empty: String
+    answerInquiry(id: Int!, input: AnswerInquiryInput!): Inquiry!
     confirmVerification(code: String!, target: String!, type: VerificationType!): Boolean!
+    createInquiry(input: CreateInquiryInput!): Inquiry!
+    deleteInquiry(id: Int!, password: String): Boolean!
     login(password: String!, username: String!): Token!
+    modifyInquiry(id: Int!, input: ModifyInquiryInput!, password: String): Inquiry!
     refreshToken(token: String!): Token!
     register(input: RegisterInput!): User!
     requestVerification(target: String!, type: VerificationType!): Boolean!
@@ -47,6 +90,10 @@ type Mutation {
 
 type Query {
     _empty: String
+    findManyInquiriesForAdmin(page: PageInput!, search: InquirySearchInput): InquiryList!
+    findManyMyInquiries(page: PageInput!): InquiryList!
+    findManyPublicInquiries(page: PageInput!, search: InquirySearchInput): InquiryList!
+    findOneInquiryById(id: Int!, password: String): Inquiry!
     me: User
 }
 
@@ -72,6 +119,21 @@ type User {
     username: String!
 }
 
+enum InquiryCategory {
+    DOMAIN
+    EMAIL
+    ETC
+    GOLDEN_SHOP
+    HOSTING
+    SSL
+    USER_INFO
+}
+
+enum InquiryStatus {
+    COMPLETED
+    PENDING
+}
+
 enum UserRole {
     ADMIN
     USER
@@ -93,9 +155,16 @@ enum VerificationType {
     SMS
 }
 
+scalar Int64
+
 scalar Time
 
 scalar Upload
+
+input AnswerInquiryInput {
+    answer: String!
+    status: InquiryStatus!
+}
 
 input BusinessInput {
     bizAddress1: String!
@@ -106,6 +175,47 @@ input BusinessInput {
     bizRegNumber: String!
     bizType: String!
     bizZipCode: String!
+}
+
+input CreateInquiryInput {
+    attachments: [FileInput!]
+    category: InquiryCategory!
+    content: String!
+    domain: String
+    email: String!
+    nonMemberPw: String
+    phoneNumber: String!
+    title: String!
+}
+
+input FileInput {
+    extension: String!
+    originalName: String!
+    size: Int!
+    storedName: String!
+    url: String!
+}
+
+input InquirySearchInput {
+    category: InquiryCategory
+    domain: String
+    keyword: String
+    status: InquiryStatus
+}
+
+input ModifyInquiryInput {
+    attachments: [FileInput!]
+    category: InquiryCategory
+    content: String
+    domain: String
+    email: String
+    phoneNumber: String
+    title: String
+}
+
+input PageInput {
+    page: Int! = 1
+    size: Int! = 10
 }
 
 input RegisterInput {

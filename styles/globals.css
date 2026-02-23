@@ -1,9 +1,15 @@
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard-dynamic-subset.min.css");
 @import "tailwindcss";
-@plugin "tailwindcss-animate";
+@plugin "@tailwindcss/typography";
 
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
+    --font-pretendard:
+        "Pretendard", -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue",
+        "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji",
+        "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+
     --bg-default: #ffffff;
     --bg-paper: #f9fafb;
 
@@ -38,39 +44,42 @@
     --color-divider-main: var(--divider-main);
     --color-divider-hover: var(--divider-hover);
 
-    --color-primary-light: #FFD98C;
-    --color-primary-main: #FFB82E;
-    --color-primary-dark: #E6A214;
+    --color-primary-light: #ffd98c;
+    --color-primary-main: #ffb82e;
+    --color-primary-dark: #e6a214;
     --color-primary-contrast: #111827;
 
-    --color-secondary-light: #E1BEE7;
-    --color-secondary-main: #AB47BC;
-    --color-secondary-dark: #8E24AA;
+    --color-secondary-light: #e1bee7;
+    --color-secondary-main: #ab47bc;
+    --color-secondary-dark: #8e24aa;
     --color-secondary-contrast: #ffffff;
 
-    --color-error-light: #FF8A80;
-    --color-error-main: #FF5252;
-    --color-error-dark: #D32F2F;
+    --color-error-light: #ff8a80;
+    --color-error-main: #ff5252;
+    --color-error-dark: #d32f2f;
     --color-error-contrast: #ffffff;
 
-    --color-warning-light: #FFD180;
-    --color-warning-main: #FFAB40;
-    --color-warning-dark: #FF9100;
+    --color-warning-light: #ffd180;
+    --color-warning-main: #ffab40;
+    --color-warning-dark: #ff9100;
     --color-warning-contrast: #ffffff;
 
-    --color-info-light: #81D4FA;
-    --color-info-main: #29B6F6;
-    --color-info-dark: #039BE5;
+    --color-info-light: #81d4fa;
+    --color-info-main: #29b6f6;
+    --color-info-dark: #039be5;
     --color-info-contrast: #ffffff;
 
-    --color-success-light: #A5D6A7;
-    --color-success-main: #66BB6A;
-    --color-success-dark: #43A047;
+    --color-success-light: #a5d6a7;
+    --color-success-main: #66bb6a;
+    --color-success-dark: #43a047;
     --color-success-contrast: #ffffff;
 }
 
 @layer base {
     body {
+        font-family: var(--font-pretendard), serif;
         @apply bg-background-default text-text-primary transition-colors duration-300;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
     }
 }

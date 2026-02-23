@@ -14,11 +14,6 @@ import { RegisterFormSchema, RegisterFormValues } from "@/actions/auth/register/
 import { RegisterAction } from "@/actions/auth/register/RegisterAction";
 import { UploadFileAction } from "@/actions/file/UploadAction";
 import { ChangeEvent, MouseEvent, useRef, useState } from "react";
-import {
-    AutoFormatBizRegNum,
-    AutoFormatLandlineNumber,
-    AutoFormatPhoneNumber,
-} from "@/utils/formatting/formatting";
 import { IoCloseCircle } from "react-icons/io5";
 import { AddressSearchModal } from "@/components/ui/modal/AddressSearchModal";
 import { AlertModal, AlertType } from "@/components/ui/modal/AlertModal";
@@ -108,10 +103,6 @@ function RegisterPage() {
             });
         }
     };
-
-    const phoneReg = register("phoneNumber");
-    const bizRegNumReg = register("bizInfo.bizRegNumber");
-    const landlineReg = register("landlineNumber");
 
     return (
         <div
@@ -225,11 +216,8 @@ function RegisterPage() {
                             fullWidth
                             error={!!errors.phoneNumber}
                             helperText={errors.phoneNumber?.message}
-                            {...phoneReg}
-                            onChange={e => {
-                                e.target.value = AutoFormatPhoneNumber(e.target.value);
-                                phoneReg.onChange(e).then(() => {});
-                            }}
+                            formatType={"phone"}
+                            {...register("phoneNumber")}
                         />
 
                         <div className="md:col-span-2">
@@ -239,11 +227,8 @@ function RegisterPage() {
                                 fullWidth
                                 error={!!errors.landlineNumber}
                                 helperText={errors.landlineNumber?.message}
-                                {...landlineReg}
-                                onChange={e => {
-                                    e.target.value = AutoFormatLandlineNumber(e.target.value);
-                                    landlineReg.onChange(e).then(() => {});
-                                }}
+                                formatType={"landline"}
+                                {...register("landlineNumber")}
                             />
                         </div>
                     </div>
@@ -286,11 +271,8 @@ function RegisterPage() {
                                     fullWidth
                                     helperText={(errors as any).bizInfo?.bizRegNumber?.message}
                                     error={!!(errors as any).bizInfo?.bizRegNumber}
-                                    {...bizRegNumReg}
-                                    onChange={e => {
-                                        e.target.value = AutoFormatBizRegNum(e.target.value);
-                                        bizRegNumReg.onChange(e).then(_ => {});
-                                    }}
+                                    {...register("bizInfo.bizRegNumber")}
+                                    formatType={"bizRegNum"}
                                 />
                             </div>
 
@@ -425,7 +407,7 @@ function RegisterPage() {
                         {isSubmitting ? "가입 처리 중..." : "가입하기"}
                     </Button>
 
-                    <div className="w-full text-center text-xs">
+                    <div className="w-full text-center text-sm text-text-secondary">
                         <Link href={"/auth/login"}>
                             이미 계정이 있으신가요?{" "}
                             <span className="font-bold text-primary-dark">로그인</span>
