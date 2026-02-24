@@ -20,3 +20,20 @@ mutation CreateInquiry($input: CreateInquiryInput!) {
         status
     }
 }
+
+query FindOneInquiryById($id: Int!, $password: String) {
+    findOneInquiryById(id: $id, password: $password) {
+        ...Inquiry
+    }
+}
+
+query FindManyMyInquiries($page: PageInput!) {
+    findManyMyInquiries(page: $page) {
+        list {
+            ...Inquiry
+        }
+        page
+        size
+        total
+    }
+}

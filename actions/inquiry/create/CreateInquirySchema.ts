@@ -17,6 +17,7 @@ export const CreateInquirySchema = z.object({
         .min(1, "문의 내용을 입력해 주세요.")
         .refine(val => val !== "<p></p>", { message: "문의 내용을 입력해 주세요." }),
     nonMemberPw: z.string().optional(),
+    attachments: z.array(z.any()).optional(),
 });
 
 export type CreateInquiryFormValues = z.infer<typeof CreateInquirySchema>;

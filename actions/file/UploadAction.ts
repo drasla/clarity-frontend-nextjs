@@ -1,10 +1,11 @@
 "use server";
 
-import { UploadFileValues, UploadFileSchema } from "./uploadSchema";
+import { UploadFileValues, UploadFileSchema } from "./UploadSchema";
+import { FileInfo } from "@/graphql/types.generated";
 
 const GRAPHQL_ENDPOINT = process.env.NEXT_PUBLIC_GRAPHQL_API || "http://localhost:8080/api";
 
-export async function UploadFileAction(data: UploadFileValues) {
+export async function UploadFileAction(data: UploadFileValues): Promise<FileInfo> {
     try {
         const parsedData = UploadFileSchema.parse(data);
         const { file, directory } = parsedData;
@@ -15,7 +16,10 @@ export async function UploadFileAction(data: UploadFileValues) {
             query: `
                 mutation UploadFile($file: Upload!, $directory: String) {
                     uploadFile(file: $file, directory: $directory) {
-                        fileName
+                        extension
+                        originalName
+                        size
+                        storedName
                         url
                     }
                 }

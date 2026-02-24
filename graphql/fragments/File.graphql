@@ -1,0 +1,9 @@
+fragment File on File {
+    id
+    createdAt
+    originalName
+    storedName
+    extension
+    size
+    url
+}

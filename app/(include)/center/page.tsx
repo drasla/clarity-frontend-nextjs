@@ -1,15 +1,13 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button/Button";
 import { GraphQLQuery } from "@/providers/apollo/apollo-server";
-import {
-    InquiryCategory,
-    InquiryStatus,
-} from "@/graphql/types.generated";
+import { InquiryCategory, InquiryStatus } from "@/graphql/types.generated";
 import dayjs from "dayjs";
 import {
     FindManyPublicInquiriesDocument,
     FindManyPublicInquiriesQuery,
 } from "@/graphql/graphql.generated";
+import { Pagination } from "@/components/ui/pagination/Pagenation";
 
 const CATEGORY_MAP: Record<InquiryCategory, string> = {
     [InquiryCategory.Domain]: "도메인",
@@ -29,16 +27,20 @@ const STATUS_MAP: Record<InquiryStatus, { label: string; color: string }> = {
 export default async function CustomerCenterPage({
     searchParams,
 }: {
-    searchParams: Promise<{ page?: string }>;
+    searchParams: Promise<{ page?: string; size?: string }>;
 }) {
     const resolvedParams = await searchParams;
     const currentPage = parseInt(resolvedParams.page || "1", 10);
+    const size = parseInt(resolvedParams.size || "10", 10);
 
     let inquiryData = null;
     try {
-        const response = await GraphQLQuery<FindManyPublicInquiriesQuery>(FindManyPublicInquiriesDocument, {
-            page: { page: currentPage, size: 10 },
-        });
+        const response = await GraphQLQuery<FindManyPublicInquiriesQuery>(
+            FindManyPublicInquiriesDocument,
+            {
+                page: { page: currentPage, size: size },
+            },
+        );
         inquiryData = response.findManyPublicInquiries;
     } catch (error) {
         console.error("문의 목록을 불러오는데 실패했습니다.", error);
@@ -61,7 +63,7 @@ export default async function CustomerCenterPage({
                 </Link>
             </div>
 
-            <div className="bg-background-default border border-divider-main rounded-xl overflow-hidden shadow-sm">
+            <div className="bg-background-default border border-divider-main rounded-xl overflow-hidden">
                 <div className="hidden md:grid grid-cols-12 gap-4 bg-background-paper p-4 border-b border-divider-main text-sm font-bold text-text-secondary text-center">
                     <div className="col-span-1">번호</div>
                     <div className="col-span-2">분류</div>
@@ -78,7 +80,7 @@ export default async function CustomerCenterPage({
                 ) : (
                     <div className="divide-y divide-divider-main">
                         {list.map((inquiry, index) => {
-                            const itemNumber = total - (currentPage - 1) * 10 - index;
+                            const itemNumber = total - (currentPage - 1) * size - index;
 
                             return (
                                 <Link
@@ -104,9 +106,7 @@ export default async function CustomerCenterPage({
                                         </div>
 
                                         <div className="flex justify-between md:contents text-text-secondary text-xs md:text-sm">
-                                            <div className="md:col-span-2">
-
-                                            </div>
+                                            <div className="md:col-span-2"></div>
                                             <div className="md:col-span-2">
                                                 {dayjs(inquiry.createdAt).format("YYYY.MM.DD")}
                                             </div>
@@ -124,29 +124,7 @@ export default async function CustomerCenterPage({
                 )}
             </div>
 
-            {total > 10 && (
-                <div className="flex justify-center items-center gap-4 mt-8">
-                    <Link
-                        href={`/center?page=${currentPage - 1}`}
-                        className={currentPage === 1 ? "pointer-events-none opacity-50" : ""}>
-                        <Button variant="outlined" size="small">
-                            이전
-                        </Button>
-                    </Link>
-                    <span className="text-text-secondary font-medium text-sm">
-                        {currentPage} 페이지
-                    </span>
-                    <Link
-                        href={`/center?page=${currentPage + 1}`}
-                        className={
-                            currentPage * 10 >= total ? "pointer-events-none opacity-50" : ""
-                        }>
-                        <Button variant="outlined" size="small">
-                            다음
-                        </Button>
-                    </Link>
-                </div>
-            )}
+            <Pagination total={total} page={currentPage} size={size}/>
         </main>
     );
 }

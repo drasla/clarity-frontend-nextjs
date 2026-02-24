@@ -1,0 +1,17 @@
+fragment Inquiry on Inquiry {
+    id
+    createdAt
+    updatedAt
+    category
+    title
+    content
+    domain
+    email
+    phoneNumber
+    status
+    answer
+    answeredAt
+    attachments {
+        ...File
+    }
+}

@@ -83,24 +83,28 @@ export const EditorToolbar = ({ editor, onImageUpload }: EditorToolbarProps) => 
             />
 
             <button
+                type={"button"}
                 onClick={() => editor.chain().focus().toggleBold().run()}
                 className={buttonClass(editor.isActive("bold"))}
                 title="굵게">
                 <RiBold className="w-5 h-5" />
             </button>
             <button
+                type={"button"}
                 onClick={() => editor.chain().focus().toggleItalic().run()}
                 className={buttonClass(editor.isActive("italic"))}
                 title="기울임">
                 <RiItalic className="w-5 h-5" />
             </button>
             <button
+                type={"button"}
                 onClick={() => editor.chain().focus().toggleUnderline().run()}
                 className={buttonClass(editor.isActive("underline"))}
                 title="밑줄">
                 <RiUnderline className="w-5 h-5" />
             </button>
             <button
+                type={"button"}
                 onClick={() => editor.chain().focus().toggleStrike().run()}
                 className={buttonClass(editor.isActive("strike"))}
                 title="취소선">
@@ -110,24 +114,28 @@ export const EditorToolbar = ({ editor, onImageUpload }: EditorToolbarProps) => 
             <div className="w-px h-6 bg-divider-main mx-2" />
 
             <button
+                type={"button"}
                 onClick={() => editor.chain().focus().setParagraph().run()}
                 className={buttonClass(editor.isActive("paragraph"))}
                 title="본문">
                 <RiParagraph className="w-5 h-5" />
             </button>
             <button
+                type={"button"}
                 onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
                 className={buttonClass(editor.isActive("heading", { level: 1 }))}
                 title="제목 1 (가장 크게)">
                 <RiH1 className="w-5 h-5" />
             </button>
             <button
+                type={"button"}
                 onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
                 className={buttonClass(editor.isActive("heading", { level: 2 }))}
                 title="제목 2 (중간)">
                 <RiH2 className="w-5 h-5" />
             </button>
             <button
+                type={"button"}
                 onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
                 className={buttonClass(editor.isActive("heading", { level: 3 }))}
                 title="제목 3 (작게)">
@@ -137,18 +145,21 @@ export const EditorToolbar = ({ editor, onImageUpload }: EditorToolbarProps) => 
             <div className="w-px h-6 bg-divider-main mx-2" />
 
             <button
+                type={"button"}
                 onClick={() => editor.chain().focus().setTextAlign("left").run()}
                 className={buttonClass(editor.isActive({ textAlign: "left" }))}
                 title="왼쪽 정렬">
                 <RiAlignLeft className="w-5 h-5" />
             </button>
             <button
+                type={"button"}
                 onClick={() => editor.chain().focus().setTextAlign("center").run()}
                 className={buttonClass(editor.isActive({ textAlign: "center" }))}
                 title="가운데 정렬">
                 <RiAlignCenter className="w-5 h-5" />
             </button>
             <button
+                type={"button"}
                 onClick={() => editor.chain().focus().setTextAlign("right").run()}
                 className={buttonClass(editor.isActive({ textAlign: "right" }))}
                 title="오른쪽 정렬">
@@ -158,12 +169,14 @@ export const EditorToolbar = ({ editor, onImageUpload }: EditorToolbarProps) => 
             <div className="w-px h-6 bg-divider-main mx-2" />
 
             <button
+                type={"button"}
                 onClick={() => editor.chain().focus().toggleBulletList().run()}
                 className={buttonClass(editor.isActive("bulletList"))}
                 title="글머리 기호 목록">
                 <RiListUnordered className="w-5 h-5" />
             </button>
             <button
+                type={"button"}
                 onClick={() => editor.chain().focus().toggleOrderedList().run()}
                 className={buttonClass(editor.isActive("orderedList"))}
                 title="번호 매기기 목록">
@@ -173,6 +186,7 @@ export const EditorToolbar = ({ editor, onImageUpload }: EditorToolbarProps) => 
             <div className="w-px h-6 bg-divider-main mx-2" />
 
             <button
+                type={"button"}
                 onClick={setLink}
                 className={buttonClass(editor.isActive("link"))}
                 title="링크 삽입">
@@ -181,6 +195,7 @@ export const EditorToolbar = ({ editor, onImageUpload }: EditorToolbarProps) => 
 
             {onImageUpload && (
                 <button
+                    type={"button"}
                     onClick={handleImageButtonClick}
                     className={buttonClass()}
                     title="이미지 삽입">
