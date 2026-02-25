@@ -14,16 +14,20 @@ export async function LoginAction(data: LoginFormValues): Promise<LoginMutation>
     const response = await GraphQLMutation<LoginMutation>(LoginDocument, variables);
 
     const accessToken = response.login.accessToken;
+    const refreshToken = response.login.refreshToken;
 
     if (accessToken) {
         const cookieStore = await cookies();
-        cookieStore.set("access_token", accessToken, {
+        const cookieOptions = {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
-            sameSite: "lax",
+            sameSite: "lax" as const,
             path: "/",
             maxAge: data.autoLogin ? 60 * 60 * 24 * 30 : undefined,
-        });
+        };
+
+        cookieStore.set("access_token", accessToken, cookieOptions);
+        cookieStore.set("refresh_token", refreshToken, cookieOptions);
     }
 
     return response;

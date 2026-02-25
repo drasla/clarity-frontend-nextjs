@@ -4,37 +4,54 @@ import { twMerge } from "tailwind-merge";
 import Image from "next/image";
 import Link from "next/link";
 import { useAuthStore } from "@/store/useAuthStore";
-import { LogoutAction } from "@/app/(include)/auth/logout/LogoutAction";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import MobileMenu from "@/components/layouts/MobileMenu";
-import { HiMenu, HiX } from "react-icons/hi";
+import {
+    HiChevronDown,
+    HiMenu,
+    HiOutlineLogout,
+    HiOutlineMoon,
+    HiOutlineServer,
+    HiOutlineShieldCheck,
+    HiOutlineSun,
+    HiOutlineUser,
+    HiX,
+} from "react-icons/hi";
 import { Button } from "@/components/ui/button/Button";
-
-const NAV_MENUS = [
-    { label: "도메인", href: "/domain" },
-    { label: "호스팅", href: "/hosting" },
-    { label: "골든샵", href: "/goldenshop" },
-    { label: "보안인증서", href: "/certificate" },
-    { label: "이메일", href: "/email" },
-    { label: "고객센터", href: "/center" },
-];
+import LogoutAction from "@/actions/auth/logout/LogoutAction";
+import {
+    Dropdown,
+    DropdownItem,
+    DropdownMenu,
+    DropdownTrigger,
+} from "@/components/ui/dropdown/Dropdown";
+import { useTheme } from "next-themes";
+import { MAIN_NAV_MENUS } from "@/constants/menus";
+import { UserRole } from "@/graphql/types.generated";
 
 function Header() {
     const router = useRouter();
     const pathname = usePathname();
     const { user, isAuthenticated, logout } = useAuthStore();
+    const { theme, setTheme } = useTheme();
 
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
         setIsMobileMenuOpen(false);
+        setMounted(true);
     }, [pathname]);
 
     const handleLogout = async () => {
         await LogoutAction();
         logout();
         router.push("/");
+    };
+
+    const toggleTheme = () => {
+        setTheme(theme === "dark" ? "light" : "dark");
     };
 
     return (
@@ -63,7 +80,7 @@ function Header() {
                             ["hidden", "md:flex", "items-center", "gap-8"],
                             ["font-medium", "text-text-primary"],
                         )}>
-                        {NAV_MENUS.map(menu => (
+                        {MAIN_NAV_MENUS.map(menu => (
                             <Link
                                 key={menu.label}
                                 href={menu.href}
@@ -80,24 +97,56 @@ function Header() {
                         )}>
                         <div className={twMerge(["hidden", "md:flex", "items-center", "gap-4"])}>
                             {isAuthenticated ? (
-                                <>
-                                    <span className="text-text-primary">
-                                        <strong className="font-bold text-primary-main">
-                                            {user?.name}
-                                        </strong>
-                                        님
-                                    </span>
-                                    <span className="w-px h-3 bg-divider-main" aria-hidden="true" />
-                                    <button
-                                        onClick={handleLogout}
-                                        className={twMerge([
-                                            "text-text-secondary",
-                                            "hover:text-text-primary",
-                                            "transition-colors",
-                                        ])}>
-                                        로그아웃
-                                    </button>
-                                </>
+                                <Dropdown>
+                                    <DropdownTrigger>
+                                        <div className="flex items-center gap-1 cursor-pointer hover:bg-background-default px-3 py-1.5 rounded-lg transition-colors">
+                                            <span className="text-text-primary">
+                                                <strong className="font-bold text-primary-main">
+                                                    {user?.name}
+                                                </strong>
+                                                님
+                                            </span>
+                                            <HiChevronDown className="w-4 h-4 text-text-secondary" />
+                                        </div>
+                                    </DropdownTrigger>
+
+                                    <DropdownMenu>
+                                        <DropdownItem href="/user" icon={HiOutlineServer}>
+                                            나의 서비스 관리
+                                        </DropdownItem>
+                                        <DropdownItem href="/user/profile" icon={HiOutlineUser}>
+                                            회원정보 수정
+                                        </DropdownItem>
+
+                                        {user?.role === UserRole.Admin && (
+                                            <DropdownItem
+                                                href="/admin"
+                                                icon={HiOutlineShieldCheck}
+                                                className="text-success-main font-bold">
+                                                관리자 모드
+                                            </DropdownItem>
+                                        )}
+
+                                        <div className="w-full h-px bg-divider-main" />
+                                        <DropdownItem
+                                            onClick={toggleTheme}
+                                            icon={
+                                                mounted && theme === "dark"
+                                                    ? HiOutlineSun
+                                                    : HiOutlineMoon
+                                            }>
+                                            {mounted && theme === "dark"
+                                                ? "라이트 모드"
+                                                : "다크 모드"}
+                                        </DropdownItem>
+                                        <DropdownItem
+                                            onClick={handleLogout}
+                                            icon={HiOutlineLogout}
+                                            className="text-error-main hover:text-error-main hover:bg-error-main/10">
+                                            로그아웃
+                                        </DropdownItem>
+                                    </DropdownMenu>
+                                </Dropdown>
                             ) : (
                                 <>
                                     <Link
@@ -142,10 +191,13 @@ function Header() {
             <MobileMenu
                 isOpen={isMobileMenuOpen}
                 onClose={() => setIsMobileMenuOpen(false)}
-                navMenus={NAV_MENUS}
+                navMenus={MAIN_NAV_MENUS}
                 isAuthenticated={isAuthenticated}
                 user={user}
                 onLogout={handleLogout}
+                theme={theme}
+                toggleTheme={toggleTheme}
+                mounted={mounted}
             />
         </>
     );

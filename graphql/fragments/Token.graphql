@@ -1,0 +1,4 @@
+fragment Token on Token {
+    accessToken
+    refreshToken
+}

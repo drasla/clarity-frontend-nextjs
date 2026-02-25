@@ -26,8 +26,9 @@ async function RootLayout({ children }: PropsWithChildren) {
                     enableSystem={true}
                     disableTransitionOnChange={false}>
                     <ApolloProvider>
-                        <AuthProvider user={user} />
-                        {children}
+                        <AuthProvider user={user} hasToken={hasToken}>
+                            {children}
+                        </AuthProvider>
                     </ApolloProvider>
                 </ThemeProvider>
             </body>

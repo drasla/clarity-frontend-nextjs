@@ -10,3 +10,9 @@ mutation Register($input: RegisterInput!) {
         ...User
     }
 }
+
+mutation RefreshToken($token: String!) {
+    refreshToken(token: $token) {
+        ...Token
+    }
+}

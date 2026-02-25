@@ -1,10 +1,17 @@
 "use client";
 
 import { User } from "@/graphql/types.generated";
-import { useRef } from "react";
+import { ReactNode, useEffect, useRef } from "react";
 import { useAuthStore } from "@/store/useAuthStore";
+import LogoutAction from "@/actions/auth/logout/LogoutAction";
 
-function AuthProvider({ user }: { user: User | null }) {
+interface AuthProviderProps {
+    user: User | null;
+    hasToken: boolean;
+    children: ReactNode;
+}
+
+function AuthProvider({ user, hasToken, children }: AuthProviderProps) {
     const initialized = useRef(false);
 
     if (!initialized.current) {
@@ -12,7 +19,18 @@ function AuthProvider({ user }: { user: User | null }) {
         initialized.current = true;
     }
 
-    return null;
+    useEffect(() => {
+        useAuthStore.getState().setUser(user);
+    }, [user]);
+
+    useEffect(() => {
+        if (hasToken && !user) {
+            LogoutAction().catch(console.error);
+            useAuthStore.getState().logout();
+        }
+    }, [hasToken, user]);
+
+    return <>{children}</>;
 }
 
 export default AuthProvider;

@@ -12,9 +12,9 @@ import {
     RiLogoutBoxRLine,
 } from "react-icons/ri";
 import { useAuthStore } from "@/store/useAuthStore";
-import { LogoutAction } from "@/app/(include)/auth/logout/LogoutAction";
 import Image from "next/image";
 import { Backdrop } from "@/components/ui/backdrop/Backdrop";
+import LogoutAction from "@/actions/auth/logout/LogoutAction";
 
 const USER_MENUS = [
     { label: "대시보드", href: "/user", icon: RiDashboardLine },

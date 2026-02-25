@@ -5,10 +5,9 @@ import { Button } from "@/components/ui/button/Button";
 import { twMerge } from "tailwind-merge";
 import dynamic from "next/dynamic";
 
-const LottiePlayer = dynamic(
-    () => import("@lottiefiles/react-lottie-player").then(mod => mod.Player),
-    { ssr: false },
-);
+const LottiePlayer = dynamic(() => import("./LottieWrapper"), {
+    ssr: false,
+});
 
 export type AlertType = "success" | "error" | "warning" | "none";
 

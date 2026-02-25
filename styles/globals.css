@@ -44,10 +44,10 @@
     --color-divider-main: var(--divider-main);
     --color-divider-hover: var(--divider-hover);
 
-    --color-primary-light: #ffd98c;
-    --color-primary-main: #ffb82e;
-    --color-primary-dark: #e6a214;
-    --color-primary-contrast: #111827;
+    --color-primary-light: #ffb82e;
+    --color-primary-main: #e08d00;
+    --color-primary-dark: #b36b00;
+    --color-primary-contrast: #FFFFFF;
 
     --color-secondary-light: #e1bee7;
     --color-secondary-main: #ab47bc;
