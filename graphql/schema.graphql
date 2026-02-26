@@ -31,6 +31,24 @@ type BusinessInfo {
     bizZipCode: String!
 }
 
+type EmailTemplate {
+    createdAt: Time!
+    description: String
+    htmlBody: String!
+    id: Int!
+    subject: String!
+    templateCode: String!
+    updatedAt: Time!
+    variables: String
+}
+
+type EmailTemplateList {
+    list: [EmailTemplate!]!
+    page: Int!
+    size: Int!
+    total: Int!
+}
+
 type File {
     createdAt: Time!
     extension: String!
@@ -77,9 +95,12 @@ type Mutation {
     _empty: String
     answerInquiry(id: Int!, input: AnswerInquiryInput!): Inquiry!
     confirmVerification(code: String!, target: String!, type: VerificationType!): Boolean!
+    createEmailTemplate(input: CreateEmailTemplateInput!): EmailTemplate!
     createInquiry(input: CreateInquiryInput!): Inquiry!
+    deleteEmailTemplate(id: Int!): Boolean!
     deleteInquiry(id: Int!, password: String): Boolean!
     login(password: String!, username: String!): Token!
+    modifyEmailTemplate(id: Int!, input: ModifyEmailTemplateInput!): EmailTemplate!
     modifyInquiry(id: Int!, input: ModifyInquiryInput!, password: String): Inquiry!
     refreshToken(token: String!): Token!
     register(input: RegisterInput!): User!
@@ -90,9 +111,11 @@ type Mutation {
 
 type Query {
     _empty: String
+    findManyEmailTemplates(page: PageInput!, search: EmailTemplateSearchInput): EmailTemplateList!
     findManyInquiriesForAdmin(page: PageInput!, search: InquirySearchInput): InquiryList!
     findManyMyInquiries(page: PageInput!): InquiryList!
     findManyPublicInquiries(page: PageInput!, search: InquirySearchInput): InquiryList!
+    findOneEmailTemplateById(id: Int!): EmailTemplate!
     findOneInquiryById(id: Int!, password: String): Inquiry!
     me: User
 }
@@ -177,6 +200,14 @@ input BusinessInput {
     bizZipCode: String!
 }
 
+input CreateEmailTemplateInput {
+    description: String
+    htmlBody: String!
+    subject: String!
+    templateCode: String!
+    variables: String
+}
+
 input CreateInquiryInput {
     attachments: [FileInput!]
     category: InquiryCategory!
@@ -186,6 +217,10 @@ input CreateInquiryInput {
     nonMemberPw: String
     phoneNumber: String!
     title: String!
+}
+
+input EmailTemplateSearchInput {
+    keyword: String
 }
 
 input FileInput {
@@ -201,6 +236,14 @@ input InquirySearchInput {
     domain: String
     keyword: String
     status: InquiryStatus
+}
+
+input ModifyEmailTemplateInput {
+    description: String
+    htmlBody: String
+    subject: String
+    templateCode: String
+    variables: String
 }
 
 input ModifyInquiryInput {

@@ -37,3 +37,14 @@ query FindManyMyInquiries($page: PageInput!) {
         total
     }
 }
+
+query FindManyInquiriesForAdmin($page: PageInput!, $search: InquirySearchInput) {
+    findManyInquiriesForAdmin(page: $page, search: $search) {
+        page
+        size
+        total
+        list {
+            ...Inquiry
+        }
+    }
+}

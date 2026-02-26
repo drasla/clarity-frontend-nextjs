@@ -61,17 +61,9 @@ export const Editor = ({
         editorProps: {
             attributes: {
                 class: twMerge(
-                    [
-                        "prose",
-                        "prose-sm",
-                        "sm:prose-base",
-                        "max-w-none",
-                        "focus:outline-none",
-                        "min-h-60",
-                        "p-6",
-                        " rounded-b-md",
-                    ],
-                    !editable && "bg-transparent border-none p-0",
+                    ["prose", "prose-sm", "sm:prose-base", "max-w-none", "min-h-60", "p-6"],
+                    ["text-text-primary", "rounded-b-md", "focus:outline-none"],
+                    !editable && ["bg-transparent", "border-none", "p-0"],
                     className,
                 ),
             },

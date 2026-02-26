@@ -14,6 +14,16 @@ function proxy(request: NextRequest) {
         return NextResponse.next();
     }
 
+    if (pathname.startsWith("/user")) {
+        if (!isAuthenticated) {
+            const loginUrl = new URL("/auth/login", request.url);
+            loginUrl.searchParams.set("callbackUrl", pathname);
+            return NextResponse.redirect(loginUrl);
+        }
+
+        return NextResponse.next();
+    }
+
     if (pathname.startsWith("/admin")) {
         if (!isAuthenticated) {
             const loginUrl = new URL("/auth/login", request.url);

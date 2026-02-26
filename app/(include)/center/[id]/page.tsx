@@ -172,8 +172,12 @@ export default function InquiryDetailPage() {
                                     key={file.id}
                                     href={file.url}
                                     target="_blank"
+                                    download={file.originalName}
                                     rel="noreferrer"
-                                    className="text-sm text-primary-main hover:underline flex items-center gap-2">
+                                    className={twMerge(
+                                        ["flex", "items-center", "gap-2"],
+                                        ["text-xs", "text-primary-main", "hover:underline"],
+                                    )}>
                                     📎 {file.originalName}
                                     <span className="text-text-disabled text-xs">
                                         ({(file.size / 1024 / 1024).toFixed(2)}MB)

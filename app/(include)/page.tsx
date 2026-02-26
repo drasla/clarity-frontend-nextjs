@@ -1,5 +1,6 @@
 import { HiExternalLink, HiSearch } from "react-icons/hi";
 import { Button } from "@/components/ui/button/Button";
+import { HexagonLoader } from "@/components/ui/loader/HexagonLoader";
 
 function RootPage() {
     return (
@@ -79,6 +80,7 @@ function RootPage() {
                     />
                 </div>
             </section>
+            <HexagonLoader />
         </main>
     );
 }

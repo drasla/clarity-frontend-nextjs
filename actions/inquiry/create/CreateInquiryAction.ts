@@ -22,6 +22,7 @@ export async function CreateInquiryAction(data: CreateInquiryFormValues) {
                 phoneNumber: parsed.data.phoneNumber,
                 content: parsed.data.content,
                 nonMemberPw: parsed.data.nonMemberPw || null,
+                attachments: parsed.data.attachments || [],
             },
         });
 

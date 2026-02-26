@@ -92,7 +92,7 @@ export default async function UserInquiriesPage({
                         const statusInfo = STATUS_MAP[inquiry.status as InquiryStatus];
 
                         return (
-                            <TableRow key={inquiry.id} href={`/center/${inquiry.id}`}>
+                            <TableRow key={inquiry.id} href={`/user/inquiries/${inquiry.id}`}>
                                 <TableCell className="hidden md:table-cell text-center text-text-secondary">
                                     {itemNumber}
                                 </TableCell>

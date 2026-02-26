@@ -46,6 +46,14 @@ export type BusinessInput = {
   bizZipCode: Scalars['String']['input'];
 };
 
+export type CreateEmailTemplateInput = {
+  description?: InputMaybe<Scalars['String']['input']>;
+  htmlBody: Scalars['String']['input'];
+  subject: Scalars['String']['input'];
+  templateCode: Scalars['String']['input'];
+  variables?: InputMaybe<Scalars['String']['input']>;
+};
+
 export type CreateInquiryInput = {
   attachments?: InputMaybe<Array<FileInput>>;
   category: InquiryCategory;
@@ -55,6 +63,30 @@ export type CreateInquiryInput = {
   nonMemberPw?: InputMaybe<Scalars['String']['input']>;
   phoneNumber: Scalars['String']['input'];
   title: Scalars['String']['input'];
+};
+
+export type EmailTemplate = {
+  __typename?: 'EmailTemplate';
+  createdAt: Scalars['Time']['output'];
+  description?: Maybe<Scalars['String']['output']>;
+  htmlBody: Scalars['String']['output'];
+  id: Scalars['Int']['output'];
+  subject: Scalars['String']['output'];
+  templateCode: Scalars['String']['output'];
+  updatedAt: Scalars['Time']['output'];
+  variables?: Maybe<Scalars['String']['output']>;
+};
+
+export type EmailTemplateList = {
+  __typename?: 'EmailTemplateList';
+  list: Array<EmailTemplate>;
+  page: Scalars['Int']['output'];
+  size: Scalars['Int']['output'];
+  total: Scalars['Int']['output'];
+};
+
+export type EmailTemplateSearchInput = {
+  keyword?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type File = {
@@ -133,6 +165,14 @@ export enum InquiryStatus {
   Pending = 'PENDING'
 }
 
+export type ModifyEmailTemplateInput = {
+  description?: InputMaybe<Scalars['String']['input']>;
+  htmlBody?: InputMaybe<Scalars['String']['input']>;
+  subject?: InputMaybe<Scalars['String']['input']>;
+  templateCode?: InputMaybe<Scalars['String']['input']>;
+  variables?: InputMaybe<Scalars['String']['input']>;
+};
+
 export type ModifyInquiryInput = {
   attachments?: InputMaybe<Array<FileInput>>;
   category?: InputMaybe<InquiryCategory>;
@@ -148,9 +188,12 @@ export type Mutation = {
   _empty?: Maybe<Scalars['String']['output']>;
   answerInquiry: Inquiry;
   confirmVerification: Scalars['Boolean']['output'];
+  createEmailTemplate: EmailTemplate;
   createInquiry: Inquiry;
+  deleteEmailTemplate: Scalars['Boolean']['output'];
   deleteInquiry: Scalars['Boolean']['output'];
   login: Token;
+  modifyEmailTemplate: EmailTemplate;
   modifyInquiry: Inquiry;
   refreshToken: Token;
   register: User;
@@ -173,8 +216,18 @@ export type MutationConfirmVerificationArgs = {
 };
 
 
+export type MutationCreateEmailTemplateArgs = {
+  input: CreateEmailTemplateInput;
+};
+
+
 export type MutationCreateInquiryArgs = {
   input: CreateInquiryInput;
+};
+
+
+export type MutationDeleteEmailTemplateArgs = {
+  id: Scalars['Int']['input'];
 };
 
 
@@ -187,6 +240,12 @@ export type MutationDeleteInquiryArgs = {
 export type MutationLoginArgs = {
   password: Scalars['String']['input'];
   username: Scalars['String']['input'];
+};
+
+
+export type MutationModifyEmailTemplateArgs = {
+  id: Scalars['Int']['input'];
+  input: ModifyEmailTemplateInput;
 };
 
 
@@ -226,11 +285,19 @@ export type PageInput = {
 export type Query = {
   __typename?: 'Query';
   _empty?: Maybe<Scalars['String']['output']>;
+  findManyEmailTemplates: EmailTemplateList;
   findManyInquiriesForAdmin: InquiryList;
   findManyMyInquiries: InquiryList;
   findManyPublicInquiries: InquiryList;
+  findOneEmailTemplateById: EmailTemplate;
   findOneInquiryById: Inquiry;
   me?: Maybe<User>;
+};
+
+
+export type QueryFindManyEmailTemplatesArgs = {
+  page: PageInput;
+  search?: InputMaybe<EmailTemplateSearchInput>;
 };
 
 
@@ -248,6 +315,11 @@ export type QueryFindManyMyInquiriesArgs = {
 export type QueryFindManyPublicInquiriesArgs = {
   page: PageInput;
   search?: InputMaybe<InquirySearchInput>;
+};
+
+
+export type QueryFindOneEmailTemplateByIdArgs = {
+  id: Scalars['Int']['input'];
 };
 
 

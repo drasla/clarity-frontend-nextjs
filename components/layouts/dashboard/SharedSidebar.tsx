@@ -3,33 +3,21 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { twMerge } from "tailwind-merge";
-import {
-    RiDashboardLine,
-    RiServerLine,
-    RiBankCardLine,
-    RiQuestionAnswerLine,
-    RiUserSettingsLine,
-    RiLogoutBoxRLine,
-} from "react-icons/ri";
+import { RiLogoutBoxRLine } from "react-icons/ri";
 import { useAuthStore } from "@/store/useAuthStore";
 import Image from "next/image";
 import { Backdrop } from "@/components/ui/backdrop/Backdrop";
 import LogoutAction from "@/actions/auth/logout/LogoutAction";
+import { SidebarMenu } from "@/constants/menus";
 
-const USER_MENUS = [
-    { label: "대시보드", href: "/user", icon: RiDashboardLine },
-    { label: "나의 서비스", href: "/user/services", icon: RiServerLine },
-    { label: "결제 내역", href: "/user/billing", icon: RiBankCardLine },
-    { label: "1:1 문의 내역", href: "/user/inquiries", icon: RiQuestionAnswerLine },
-    { label: "회원 정보 수정", href: "/user/profile", icon: RiUserSettingsLine },
-];
-
-interface UserSidebarProps {
+interface SharedSidebarProps {
     isOpen: boolean;
     onClose: () => void;
+    menus: SidebarMenu[];
+    basePath: string;
 }
 
-function UserSidebar({ isOpen, onClose }: UserSidebarProps) {
+function SharedSidebar({ isOpen, onClose, menus, basePath }: SharedSidebarProps) {
     const pathname = usePathname();
     const { user, logout } = useAuthStore();
 
@@ -49,7 +37,7 @@ function UserSidebar({ isOpen, onClose }: UserSidebarProps) {
                 className={twMerge(
                     ["fixed", "inset-y-0", "left-0", "z-50"],
                     ["w-64", "h-full", "flex", "flex-col", "shrink-0"],
-                    ["bg-background-default", "border-r", " border-divider-main"],
+                    ["bg-background-default", "border-r", "border-divider-main"],
                     ["transform", "transition-transform", "duration-300", "ease-in-out"],
                     isOpen ? "translate-x-0" : "-translate-x-full",
                     ["md:relative", "md:translate-x-0", "md:flex"],
@@ -73,10 +61,10 @@ function UserSidebar({ isOpen, onClose }: UserSidebarProps) {
                 </div>
 
                 <nav className="flex-1 overflow-y-auto py-4 px-3 flex flex-col gap-1">
-                    {USER_MENUS.map(menu => {
+                    {menus.map(menu => {
                         const isActive =
-                            menu.href === "/user"
-                                ? pathname === "/user"
+                            menu.href === basePath
+                                ? pathname === basePath
                                 : pathname.startsWith(menu.href);
 
                         return (
@@ -115,4 +103,4 @@ function UserSidebar({ isOpen, onClose }: UserSidebarProps) {
     );
 }
 
-export default UserSidebar;
+export default SharedSidebar;

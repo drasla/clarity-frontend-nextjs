@@ -22,8 +22,8 @@
 }
 
 .dark {
-    --bg-default: #121212;
-    --bg-paper: #1e1e1e;
+    --bg-default: #202020;
+    --bg-paper: #292929;
 
     --text-primary: #f3f4f6;
     --text-secondary: #9ca3af;
@@ -73,6 +73,16 @@
     --color-success-main: #66bb6a;
     --color-success-dark: #43a047;
     --color-success-contrast: #ffffff;
+
+    --animate-hex-fill: hex-fill 4s infinite ease-in-out;
+
+    @keyframes hex-fill {
+        0% { opacity: 0.1; transform: scale(0.95); }
+        25% { opacity: 1; transform: scale(1); }
+        50% { opacity: 1; transform: scale(1); }
+        75% { opacity: 0.1; transform: scale(0.95); }
+        100% { opacity: 0.1; transform: scale(0.95); }
+    }
 }
 
 @layer base {
