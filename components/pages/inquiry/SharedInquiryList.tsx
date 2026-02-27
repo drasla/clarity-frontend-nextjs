@@ -9,10 +9,10 @@ import { Input } from "@/components/ui/input/Input";
 import { Select } from "@/components/ui/select/Select";
 import { InquiryCategory, InquiryStatus } from "@/graphql/types.generated";
 import { Pagination } from "@/components/ui/pagination/Pagenation";
-import { FormEvent } from "react";
 import { Table, TableBody, TableCell, TableHeader, TableRow } from "@/components/ui/table/Table";
 import { INQUIRY_CATEGORY_MAP, INQUIRY_STATUS_MAP } from "@/constants/inquiry";
 import { InquiryFragment } from "@/graphql/graphql.generated";
+import { SyntheticEvent } from "react";
 
 interface SharedInquiryListProps {
     title: string;
@@ -51,7 +51,7 @@ export default function SharedInquiryList({
         router.push(`${pathname}?${params.toString()}`);
     };
 
-    const handleSearch = (e: FormEvent<HTMLFormElement>) => {
+    const handleSearch = (e: SyntheticEvent<HTMLFormElement>) => {
         e.preventDefault();
         const formData = new FormData(e.currentTarget);
         updateSearchParams("keyword", formData.get("keyword") as string);
@@ -59,7 +59,11 @@ export default function SharedInquiryList({
 
     return (
         <div className="w-full">
-            <div className="mb-6 flex flex-col md:flex-row md:items-end justify-between gap-4">
+            <div
+                className={twMerge(
+                    ["mb-6", "flex", "flex-col", "md:flex-row"],
+                    ["md:items-end", "justify-between", "gap-4"],
+                )}>
                 <div>
                     <h1
                         className={twMerge(
@@ -79,37 +83,54 @@ export default function SharedInquiryList({
                 )}
             </div>
 
-            <div className="mb-4 p-4 bg-background-paper border border-divider-main rounded-xl flex flex-col md:flex-row gap-3">
-                <Select
-                    className="w-full md:w-40"
-                    defaultValue={searchParams.get("category") || ""}
-                    onChange={e => updateSearchParams("category", e.target.value)}>
-                    <option value="">전체 유형</option>
-                    <option value={InquiryCategory.Domain}>도메인</option>
-                    <option value={InquiryCategory.Hosting}>호스팅</option>
-                    <option value={InquiryCategory.GoldenShop}>골든샵</option>
-                    <option value={InquiryCategory.Ssl}>보안인증서 (SSL)</option>
-                    <option value={InquiryCategory.Email}>이메일</option>
-                    <option value={InquiryCategory.Etc}>기타</option>
-                </Select>
+            <div
+                className={twMerge(
+                    ["mb-4", "p-4", "bg-background-paper", "border", "border-divider-main"],
+                    ["rounded-xl", "flex", "flex-col", "md:flex-row", "md:items-center", "gap-3"],
+                )}>
+                <div className={twMerge(["flex", "w-full", "md:w-auto", "gap-3", "shrink-0"])}>
+                    <Select
+                        fullWidth
+                        className={"md:w-40 bg-background-default"}
+                        value={searchParams.get("category") || ""}
+                        onChange={e => updateSearchParams("category", e.target.value)}>
+                        <option value="">전체 유형</option>
+                        <option value={InquiryCategory.Domain}>도메인</option>
+                        <option value={InquiryCategory.Hosting}>호스팅</option>
+                        <option value={InquiryCategory.GoldenShop}>골든샵</option>
+                        <option value={InquiryCategory.Ssl}>보안인증서 (SSL)</option>
+                        <option value={InquiryCategory.Email}>이메일</option>
+                        <option value={InquiryCategory.Etc}>기타</option>
+                    </Select>
 
-                <Select
-                    className="w-full md:w-32"
-                    defaultValue={searchParams.get("status") || ""}
-                    onChange={e => updateSearchParams("status", e.target.value)}>
-                    <option value="">전체 상태</option>
-                    <option value={InquiryStatus.Pending}>답변대기</option>
-                    <option value={InquiryStatus.Completed}>답변완료</option>
-                </Select>
+                    <Select
+                        fullWidth
+                        className={"md:w-32 bg-background-default"}
+                        value={searchParams.get("status") || ""}
+                        onChange={e => updateSearchParams("status", e.target.value)}>
+                        <option value="">전체 상태</option>
+                        <option value={InquiryStatus.Pending}>답변대기</option>
+                        <option value={InquiryStatus.Completed}>답변완료</option>
+                    </Select>
+                </div>
 
-                <form onSubmit={handleSearch} className="flex-1 flex gap-2">
+                <form
+                    onSubmit={handleSearch}
+                    className={twMerge(
+                        ["w-full", "md:w-auto", "md:max-w-md", "md:ml-auto"],
+                        ["flex", "gap-2"],
+                    )}>
                     <Input
                         name="keyword"
+                        fullWidth
                         placeholder="제목 또는 내용 검색"
                         defaultValue={searchParams.get("keyword") || ""}
-                        className="flex-1"
+                        className={"bg-background-default"}
                     />
-                    <Button type="submit" variant="outlined">
+                    <Button
+                        type="submit"
+                        variant="outlined"
+                        className={"bg-background-default shrink-0"}>
                         검색
                     </Button>
                 </form>
@@ -132,17 +153,31 @@ export default function SharedInquiryList({
 
                         return (
                             <TableRow key={inquiry.id} href={`${basePath}/${inquiry.id}`}>
-                                <TableCell className="hidden md:table-cell text-center text-text-secondary">
+                                <TableCell
+                                    className={twMerge(
+                                        ["hidden", "md:table-cell"],
+                                        ["text-center", "text-text-secondary"],
+                                    )}>
                                     {itemNumber}
                                 </TableCell>
 
-                                <TableCell className="flex justify-between items-center md:table-cell md:text-center mb-2 md:mb-0">
-                                    <span className="md:hidden px-2 py-1 bg-divider-main/20 text-text-secondary rounded text-xs font-bold">
+                                <TableCell
+                                    className={twMerge(
+                                        ["md:table-cell", "md:text-center", "mb-2", "md:mb-0"],
+                                        ["flex", "justify-between", "items-center"],
+                                    )}>
+                                    <span
+                                        className={twMerge(
+                                            ["md:hidden", "px-2", "py-1", "rounded"],
+                                            "bg-divider-main/20",
+                                            ["text-text-secondary", "text-xs", "font-bold"],
+                                        )}>
                                         {INQUIRY_CATEGORY_MAP[inquiry.category as InquiryCategory]}
                                     </span>
                                     <span
                                         className={twMerge(
-                                            "px-3 py-1 text-xs md:text-sm font-bold rounded-md whitespace-nowrap",
+                                            ["px-3", "py-1", "text-xs", "md:text-sm", "font-bold"],
+                                            ["rounded-md", "whitespace-nowrap"],
                                             statusInfo.bg,
                                             statusInfo.color,
                                         )}>
@@ -150,9 +185,19 @@ export default function SharedInquiryList({
                                     </span>
                                 </TableCell>
 
-                                <TableCell className="text-left font-medium group-hover:text-primary-main transition-colors truncate mb-2 md:mb-0">
-                                    <div className="flex items-center gap-2">
-                                        <span className="hidden md:inline-block px-2 py-1 bg-divider-main/20 text-text-secondary rounded text-xs font-bold shrink-0">
+                                <TableCell
+                                    className={twMerge(
+                                        ["text-left", "font-medium", "mb-2", "md:mb-0", "truncate"],
+                                        ["group-hover:text-primary-main", "transition-colors"],
+                                    )}>
+                                    <div className={twMerge(["flex", "items-center", "gap-2"])}>
+                                        <span
+                                            className={twMerge(
+                                                ["hidden", "md:inline-block", "shrink-0"],
+                                                ["px-2", "py-1"],
+                                                ["text-text-secondary", "text-xs", "font-bold"],
+                                                ["bg-divider-main/20", "rounded"],
+                                            )}>
                                             {
                                                 INQUIRY_CATEGORY_MAP[
                                                     inquiry.category as InquiryCategory
@@ -163,8 +208,17 @@ export default function SharedInquiryList({
                                     </div>
                                 </TableCell>
 
-                                <TableCell className="text-left md:text-center text-text-secondary text-xs md:text-sm">
-                                    <div className="flex flex-col md:inline-block">
+                                <TableCell
+                                    className={twMerge(
+                                        ["text-left", "md:text-center"],
+                                        ["text-text-secondary", "text-xs", "md:text-sm"],
+                                    )}>
+                                    <div
+                                        className={twMerge([
+                                            "flex",
+                                            "flex-col",
+                                            "md:inline-block",
+                                        ])}>
                                         <span>{dayjs(inquiry.createdAt).format("YYYY.MM.DD")}</span>
                                         {inquiry.answeredAt && (
                                             <span className="text-primary-main/70 md:ml-2">

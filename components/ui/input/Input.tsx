@@ -71,7 +71,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             <div
                 className={twMerge(
                     ["flex", "flex-col", "gap-1"],
-                    fullWidth ? "w-full" : ["inline-flex", "w-fit", "min-w-50"],
+                    fullWidth ? "w-full" : ["inline-flex", "w-fit"],
                 )}>
                 <div className={"relative"}>
                     <input
@@ -92,7 +92,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
                     <fieldset
                         aria-hidden="true"
                         className={twMerge(
-                            ["absolute", "inset-0", "pointer-events-none"],
+                            ["absolute", "inset-0", "pointer-events-none", "z-11"],
                             ["rounded-md", "border", "border-divider-main"],
                             ["transition-colors", "duration-200"],
                             "peer-focus:border-2",
@@ -100,13 +100,10 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
                             legendWidthClass,
                         )}>
                         <legend
-                            className={twMerge([
-                                "ml-2",
-                                "text-xs",
-                                "overflow-hidden",
-                                "h-0",
-                                "max-w-[0.01px]",
-                            ])}>
+                            className={twMerge(
+                                ["ml-2", "h-0", "max-w-[0.01px]"],
+                                ["text-xs", "overflow-hidden"],
+                            )}>
                             <span className={twMerge(["opacity-0", "px-1"])}>{label}</span>
                         </legend>
                     </fieldset>
@@ -116,7 +113,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
                             htmlFor={inputId}
                             className={twMerge(
                                 ["absolute", "left-3", "origin-left", "cursor-text"],
-                                ["px-1", "pointer-events-none", "z-20"],
+                                ["px-1", "pointer-events-none", "z-12"],
                                 ["transition-all", "duration-200", "scale-75", "-translate-y-1/2"],
                                 [
                                     "peer-placeholder-shown:top-1/2",

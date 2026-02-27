@@ -71,7 +71,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
                             className,
                         )}
                         {...props}>
-                        <option value="" disabled hidden></option>
+                        {options && <option value="" disabled hidden></option>}
                         {options
                             ? options.map(opt => (
                                   <option key={opt.value} value={opt.value}>
@@ -84,28 +84,25 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
                     <fieldset
                         aria-hidden="true"
                         className={twMerge(
-                            ["absolute", "inset-0", "pointer-events-none"],
+                            ["absolute", "inset-0", "pointer-events-none", "z-11"],
                             ["rounded-md", "border", "border-divider-main"],
                             ["transition-colors", "duration-200"],
                             "peer-focus:border-2",
                             StylesFieldColorClasses[activeColor].field,
-                            selectLegendWidthClass, // 💡 Select 전용 노치 클래스 적용
+                            selectLegendWidthClass,
                         )}>
                         <legend
-                            className={twMerge([
-                                "ml-2",
-                                "text-xs",
-                                "overflow-hidden",
-                                "h-0",
-                                "max-w-[0.01px]",
-                            ])}>
+                            className={twMerge(
+                                ["ml-2", "h-0", "max-w-[0.01px]"],
+                                ["text-xs", "overflow-hidden"],
+                            )}>
                             <span className={twMerge(["opacity-0", "px-1"])}>{label}</span>
                         </legend>
                     </fieldset>
 
                     <div
                         className={twMerge(
-                            ["absolute", "inset-y-0", "right-0", "z-20"],
+                            ["absolute", "inset-y-0", "right-0", "z-12"],
                             ["flex", "items-center", "px-3", "text-text-secondary"],
                             ["pointer-events-none"],
                         )}>
@@ -117,7 +114,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
                             htmlFor={selectId}
                             className={twMerge(
                                 ["absolute", "left-3", "origin-left", "cursor-pointer"],
-                                ["px-1", "pointer-events-none", "z-20"],
+                                ["px-1", "pointer-events-none", "z-12"],
                                 ["transition-all", "duration-200", "scale-75", "-translate-y-1/2"],
                                 [
                                     "peer-invalid:top-1/2",
