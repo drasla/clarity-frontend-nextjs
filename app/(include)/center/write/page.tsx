@@ -65,10 +65,10 @@ export default function CustomerCenterWritePage() {
 
     const handleImageUpload = async (file: File): Promise<string> => {
         try {
-            const result = await UploadFileAction({
-                file,
-                directory: "inquiry",
-            });
+            const formData = new FormData();
+            formData.append("file", file);
+            formData.append("directory", "inquiry");
+            const result = await UploadFileAction(formData);
 
             return result.url;
         } catch (error: any) {

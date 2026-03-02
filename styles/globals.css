@@ -1,17 +1,17 @@
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard-dynamic-subset.min.css");
 @import "tailwindcss";
+
 @plugin "@tailwindcss/typography";
 
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
-    --font-pretendard:
-        "Pretendard", -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue",
-        "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji",
-        "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+    --font-pretendard: "Pretendard", -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue",
+    "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
 
     --bg-default: #ffffff;
-    --bg-paper: #f5f5f5;
+    --bg-paper: #f5f6f8;
 
     --text-primary: #111827;
     --text-secondary: #6b7280;
@@ -44,9 +44,9 @@
     --color-divider-main: var(--divider-main);
     --color-divider-hover: var(--divider-hover);
 
-    --color-primary-light: #ffb82e;
-    --color-primary-main: #e08d00;
-    --color-primary-dark: #b36b00;
+    --color-primary-light: #FED680;
+    --color-primary-main: #FDA92C;
+    --color-primary-dark: #B66816;
     --color-primary-contrast: #FFFFFF;
 
     --color-secondary-light: #e1bee7;
@@ -77,11 +77,26 @@
     --animate-hex-fill: hex-fill 4s infinite ease-in-out;
 
     @keyframes hex-fill {
-        0% { opacity: 0.1; transform: scale(0.95); }
-        25% { opacity: 1; transform: scale(1); }
-        50% { opacity: 1; transform: scale(1); }
-        75% { opacity: 0.1; transform: scale(0.95); }
-        100% { opacity: 0.1; transform: scale(0.95); }
+        0% {
+            opacity: 0.1;
+            transform: scale(0.95);
+        }
+        25% {
+            opacity: 1;
+            transform: scale(1);
+        }
+        50% {
+            opacity: 1;
+            transform: scale(1);
+        }
+        75% {
+            opacity: 0.1;
+            transform: scale(0.95);
+        }
+        100% {
+            opacity: 0.1;
+            transform: scale(0.95);
+        }
     }
 }
 

@@ -1,5 +1,5 @@
 import { FindManyInquiriesForAdminAction } from "@/actions/inquiry/findManyAdmin/FindManyInquiriesForAdminAction";
-import SharedInquiryList from "@/components/pages/inquiry/SharedInquiryList";
+import SharedInquiryList from "@/components/pages/inquiry/list/SharedInquiryList";
 import { InquiryFragment } from "@/graphql/graphql.generated";
 
 async function AdminInquiriesPage(props: {

@@ -72,10 +72,10 @@ function RegisterPage() {
     const onSubmit = async (data: RegisterFormValues) => {
         try {
             if (data.userType === UserType.Business && bizFile) {
-                const uploadResult = await UploadFileAction({
-                    file: bizFile,
-                    directory: "user/license",
-                });
+                const formData = new FormData();
+                formData.append("file", bizFile);
+                formData.append("folder", "user/license");
+               const uploadResult = await UploadFileAction(formData);
                 if (data.bizInfo) {
                     data.bizInfo.bizLicenseURL = uploadResult.url;
                 }

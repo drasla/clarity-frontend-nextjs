@@ -14,7 +14,7 @@ interface EditorProps {
     content?: string;
     onChange?: (html: string) => void;
     placeholder?: string;
-    onImageUpload?: (file: File) => Promise<string>;
+    enableImageUpload?: boolean;
     className?: string;
     editable?: boolean;
 }
@@ -23,7 +23,7 @@ export const Editor = ({
     content = "",
     onChange,
     placeholder = "내용을 입력하세요...",
-    onImageUpload,
+    enableImageUpload = false,
     className,
     editable = true,
 }: EditorProps) => {
@@ -76,7 +76,7 @@ export const Editor = ({
 
     return (
         <div className="w-full rounded-md border border-divider-main overflow-hidden">
-            {editable && <EditorToolbar editor={editor} onImageUpload={onImageUpload} />}
+            {editable && <EditorToolbar editor={editor} enableImageUpload={enableImageUpload} />}
             <EditorContent editor={editor} />
         </div>
     );

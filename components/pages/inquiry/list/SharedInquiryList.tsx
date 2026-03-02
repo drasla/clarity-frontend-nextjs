@@ -13,6 +13,7 @@ import { Table, TableBody, TableCell, TableHeader, TableRow } from "@/components
 import { INQUIRY_CATEGORY_MAP, INQUIRY_STATUS_MAP } from "@/constants/inquiry";
 import { InquiryFragment } from "@/graphql/graphql.generated";
 import { SyntheticEvent } from "react";
+import Chip from "@/components/ui/chip/Chip";
 
 interface SharedInquiryListProps {
     title: string;
@@ -142,7 +143,7 @@ export default function SharedInquiryList({
                         { label: "번호", className: "w-20 text-center" },
                         { label: "상태", className: "w-32 text-center" },
                         { label: "제목", className: "text-left" },
-                        { label: "작성일 (답변일)", className: "w-48 text-center" },
+                        { label: "작성일", className: "w-48 text-center" },
                     ]}
                 />
 
@@ -150,6 +151,8 @@ export default function SharedInquiryList({
                     {list.map((inquiry, index) => {
                         const itemNumber = total - (page - 1) * size - index;
                         const statusInfo = INQUIRY_STATUS_MAP[inquiry.status as InquiryStatus];
+
+                        console.log(statusInfo);
 
                         return (
                             <TableRow key={inquiry.id} href={`${basePath}/${inquiry.id}`}>
@@ -174,15 +177,11 @@ export default function SharedInquiryList({
                                         )}>
                                         {INQUIRY_CATEGORY_MAP[inquiry.category as InquiryCategory]}
                                     </span>
-                                    <span
-                                        className={twMerge(
-                                            ["px-3", "py-1", "text-xs", "md:text-sm", "font-bold"],
-                                            ["rounded-md", "whitespace-nowrap"],
-                                            statusInfo.bg,
-                                            statusInfo.color,
-                                        )}>
-                                        {statusInfo.label}
-                                    </span>
+                                    <Chip
+                                        label={statusInfo.label}
+                                        color={statusInfo.color}
+                                        variant={statusInfo.variant}
+                                    />
                                 </TableCell>
 
                                 <TableCell
@@ -191,19 +190,21 @@ export default function SharedInquiryList({
                                         ["group-hover:text-primary-main", "transition-colors"],
                                     )}>
                                     <div className={twMerge(["flex", "items-center", "gap-2"])}>
-                                        <span
-                                            className={twMerge(
-                                                ["hidden", "md:inline-block", "shrink-0"],
-                                                ["px-2", "py-1"],
-                                                ["text-text-secondary", "text-xs", "font-bold"],
-                                                ["bg-divider-main/20", "rounded"],
-                                            )}>
-                                            {
+                                        <Chip
+                                            label={
                                                 INQUIRY_CATEGORY_MAP[
                                                     inquiry.category as InquiryCategory
                                                 ]
                                             }
-                                        </span>
+                                            color="default"
+                                            variant="soft"
+                                            size="small"
+                                            className={twMerge([
+                                                "hidden",
+                                                "md:inline-flex",
+                                                "shrink-0",
+                                            ])}
+                                        />
                                         <span className="truncate">{inquiry.title}</span>
                                     </div>
                                 </TableCell>
@@ -220,11 +221,6 @@ export default function SharedInquiryList({
                                             "md:inline-block",
                                         ])}>
                                         <span>{dayjs(inquiry.createdAt).format("YYYY.MM.DD")}</span>
-                                        {inquiry.answeredAt && (
-                                            <span className="text-primary-main/70 md:ml-2">
-                                                (답변: {dayjs(inquiry.answeredAt).format("MM.DD")})
-                                            </span>
-                                        )}
                                     </div>
                                 </TableCell>
                             </TableRow>

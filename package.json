@@ -11,7 +11,7 @@
     "keywords": [],
     "author": "",
     "license": "ISC",
-    "packageManager": "pnpm@10.30.0",
+    "packageManager": "pnpm@10.30.3",
     "dependencies": {
         "@apollo/client": "^4.1.4",
         "@apollo/client-integration-nextjs": "^0.14.4",

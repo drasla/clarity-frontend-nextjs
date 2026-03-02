@@ -89,9 +89,12 @@ export default function UserInquiryWritePage() {
             let uploadedAttachments: any[] = [];
 
             if (selectedFiles.length > 0) {
-                const uploadPromises = selectedFiles.map(file =>
-                    UploadFileAction({ file, directory: "inquiry" }),
-                );
+                const uploadPromises = selectedFiles.map(file => {
+                    const formData = new FormData();
+                    formData.append("file", file);
+                    formData.append("directory", "inquiry");
+                    return UploadFileAction(formData);
+                });
 
                 const uploadResults = await Promise.all(uploadPromises);
 
@@ -217,10 +220,10 @@ export default function UserInquiryWritePage() {
                         onChange={html => setValue("content", html, { shouldValidate: true })}
                         placeholder="문의 내용을 자세히 적어주세요."
                         onImageUpload={async file => {
-                            const res = await UploadFileAction({
-                                file,
-                                directory: "inquiry_inline",
-                            });
+                            const formData = new FormData();
+                            formData.append("file", file);
+                            formData.append("directory", "inquiry");
+                            const res = await UploadFileAction(formData);
                             return res.url;
                         }}
                     />

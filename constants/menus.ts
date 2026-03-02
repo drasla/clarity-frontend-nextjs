@@ -17,8 +17,9 @@ export interface NavMenu {
 
 export interface SidebarMenu {
     label: string;
-    href: string;
-    icon: ElementType;
+    href?: string;
+    icon?: ElementType;
+    children?: SidebarMenu[];
 }
 
 export const MAIN_NAV_MENUS: NavMenu[] = [
@@ -32,7 +33,17 @@ export const MAIN_NAV_MENUS: NavMenu[] = [
 
 export const USER_SIDEBAR_MENUS: SidebarMenu[] = [
     { label: "대시보드", href: "/user", icon: RiDashboardLine },
-    { label: "나의 서비스", href: "/user/services", icon: RiServerLine },
+    {
+        label: "나의 서비스",
+        href: "/user/services",
+        icon: RiServerLine,
+        children: [
+            { label: "도메인", href: "/user/services/domain" },
+            { label: "호스팅", href: "/user/services/hosting" },
+            { label: "보안인증서", href: "/user/services/ssl"},
+            { label: "이메일", href: "/user/services/email" },
+        ],
+    },
     { label: "결제 내역", href: "/user/billing", icon: RiBankCardLine },
     { label: "1:1 문의 내역", href: "/user/inquiries", icon: RiQuestionAnswerLine },
     { label: "회원 정보 수정", href: "/user/profile", icon: RiUserSettingsLine },
@@ -40,7 +51,17 @@ export const USER_SIDEBAR_MENUS: SidebarMenu[] = [
 
 export const ADMIN_SIDEBAR_MENUS: SidebarMenu[] = [
     { label: "관리자 대시보드", href: "/admin", icon: HiOutlineUser },
-    { label: "서비스 관리", href: "/admin/services", icon: HiOutlineServer },
+    {
+        label: "서비스 관리",
+        href: "/admin/services",
+        icon: HiOutlineServer,
+        children: [
+            { label: "도메인", href: "/user/services/domain" },
+            { label: "호스팅", href: "/user/services/hosting" },
+            { label: "보안인증서", href: "/user/services/ssl" },
+            { label: "이메일", href: "/user/services/email" },
+        ],
+    },
     { label: "문의 관리 (CS)", href: "/admin/inquiries", icon: HiOutlineTicket },
     { label: "시스템 설정", href: "/admin/settings", icon: HiOutlineCog },
 ];

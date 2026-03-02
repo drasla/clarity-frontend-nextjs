@@ -4,6 +4,9 @@ export type StylesColorType = "primary" | "secondary" | "error" | "warning" | "i
 export type StylesSizeType = "small" | "medium" | "large";
 export type StylesButtonVariantType = "contained" | "outlined" | "text";
 
+export type ChipColor = StylesColorType | "default";
+export type ChipVariant = "filled" | "outlined" | "soft";
+
 export const StylesSizeClasses = {
     small: twMerge(["px-3", "py-2", "text-sm"]),
     medium: twMerge(["px-4", "py-3", "text-base"]),

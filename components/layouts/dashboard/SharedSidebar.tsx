@@ -1,24 +1,23 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { twMerge } from "tailwind-merge";
-import { RiLogoutBoxRLine } from "react-icons/ri";
+import { RiCloseLine, RiLogoutBoxRLine } from "react-icons/ri";
 import { useAuthStore } from "@/store/useAuthStore";
 import Image from "next/image";
 import { Backdrop } from "@/components/ui/backdrop/Backdrop";
 import LogoutAction from "@/actions/auth/logout/LogoutAction";
 import { SidebarMenu } from "@/constants/menus";
+import { SidebarMenuItem } from "@/components/layouts/dashboard/SidebarMenuItem";
 
 interface SharedSidebarProps {
     isOpen: boolean;
-    onClose: () => void;
+    onClose: VoidFunction;
     menus: SidebarMenu[];
     basePath: string;
 }
 
 function SharedSidebar({ isOpen, onClose, menus, basePath }: SharedSidebarProps) {
-    const pathname = usePathname();
     const { user, logout } = useAuthStore();
 
     const handleLogout = async () => {
@@ -36,65 +35,108 @@ function SharedSidebar({ isOpen, onClose, menus, basePath }: SharedSidebarProps)
             <aside
                 className={twMerge(
                     ["fixed", "inset-y-0", "left-0", "z-50"],
-                    ["w-64", "h-full", "flex", "flex-col", "shrink-0"],
-                    ["bg-background-default", "border-r", "border-divider-main"],
+                    ["flex", "flex-col", "shrink-0"],
+                    ["w-full", "lg:w-64", "h-full"],
+                    ["bg-background-default"],
+                    ["lg:border-r", "border-divider-main"],
                     ["transform", "transition-transform", "duration-300", "ease-in-out"],
-                    isOpen ? "translate-x-0" : "-translate-x-full",
-                    ["md:relative", "md:translate-x-0", "md:flex"],
+                    isOpen ? ["translate-x-0"] : ["-translate-x-full"],
+                    ["lg:relative", "lg:translate-x-0", "lg:flex"],
                 )}>
-                <div className="h-15 flex items-center px-6 border-b border-divider-main shrink-0">
-                    <Link href="/" className="text-xl font-black text-primary-main tracking-wider">
+                <div
+                    className={twMerge(
+                        ["flex", "items-center", "justify-between", "shrink-0"],
+                        ["h-16", "lg:h-20", "px-6"],
+                    )}>
+                    <Link href="/" className={twMerge(["transition-transform", "hover:scale-105"])}>
                         <Image
                             src={"/assets/images/logo_horizontal_light.png"}
                             alt={"Logo"}
-                            width={180}
-                            height={26}
+                            width={150}
+                            height={22}
                         />
                     </Link>
+                    <button
+                        type="button"
+                        onClick={onClose}
+                        className={twMerge(
+                            ["lg:hidden", "p-2", "-mr-2"],
+                            ["text-text-secondary", "rounded-full"],
+                            ["transition-colors", "hover:bg-background-paper"],
+                        )}>
+                        <RiCloseLine className={twMerge(["w-6", "h-6"])} />
+                    </button>
                 </div>
 
-                <div className="p-6 border-b border-divider-main/50">
-                    <p className="text-sm text-text-secondary mb-1">환영합니다!</p>
-                    <p className="text-lg font-bold text-text-primary truncate">
-                        {user?.name || "고객"}님
-                    </p>
-                </div>
-
-                <nav className="flex-1 overflow-y-auto py-4 px-3 flex flex-col gap-1">
-                    {menus.map(menu => {
-                        const isActive =
-                            menu.href === basePath
-                                ? pathname === basePath
-                                : pathname.startsWith(menu.href);
-
-                        return (
-                            <Link
-                                key={menu.href}
-                                href={menu.href}
-                                onClick={onClose}
+                <div className={twMerge(["px-5", "mb-6", "mt-4"])}>
+                    <div
+                        className={twMerge(
+                            ["flex", "items-center", "gap-3", "p-4"],
+                            ["bg-background-default", "rounded-xl"],
+                            ["border", "border-divider-main/50"],
+                        )}>
+                        <div
+                            className={twMerge(
+                                ["flex", "items-center", "justify-center", "shrink-0"],
+                                ["w-10", "h-10", "rounded-full"],
+                                ["bg-primary-main/10"],
+                            )}>
+                            <span
+                                className={twMerge(["text-sm", "font-bold", "text-primary-main"])}>
+                                {user?.name?.charAt(0) || "U"}
+                            </span>
+                        </div>
+                        <div className="flex flex-col min-w-0">
+                            <p
                                 className={twMerge(
-                                    "flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors",
-                                    isActive
-                                        ? "bg-primary-main/10 text-primary-main font-bold"
-                                        : "text-text-secondary hover:bg-background-paper hover:text-text-primary",
+                                    ["text-sm", "font-bold", "text-text-primary"],
+                                    "truncate",
                                 )}>
-                                <menu.icon
-                                    className={twMerge(
-                                        "w-5 h-5",
-                                        isActive ? "text-primary-main" : "text-text-disabled",
-                                    )}
-                                />
-                                {menu.label}
-                            </Link>
-                        );
-                    })}
+                                {user?.name || "고객"}님
+                            </p>
+                            <p className={twMerge(["text-xs", "text-text-secondary", "truncate"])}>
+                                {user?.role === "ADMIN" ? "최고 관리자" : "일반 회원"}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <nav
+                    className={twMerge(
+                        ["flex-1", "flex", "flex-col"],
+                        ["overflow-y-auto", "scrollbar-hide"],
+                        ["px-4", "gap-1.5"],
+                    )}>
+                    <p
+                        className={twMerge(
+                            ["px-2", "mt-4", "mb-2"],
+                            ["text-xs", "font-bold", "uppercase", "tracking-wider"],
+                            ["text-text-disabled"],
+                        )}>
+                        Menu
+                    </p>
+
+                    {menus.map((menu, index) => (
+                        <SidebarMenuItem
+                            key={`${menu.href || menu.label}-${index}`}
+                            menu={menu}
+                            basePath={basePath}
+                            onClose={onClose}
+                        />
+                    ))}
                 </nav>
 
-                <div className="p-4 border-t border-divider-main shrink-0">
+                <div className="p-4 mt-auto shrink-0">
                     <button
                         onClick={handleLogout}
-                        className="flex items-center gap-3 px-4 py-3 w-full rounded-lg text-sm font-medium text-text-secondary hover:bg-error-main/10 hover:text-error-main transition-colors">
-                        <RiLogoutBoxRLine className="w-5 h-5" />
+                        className={twMerge(
+                            ["flex", "items-center", "w-full", "gap-3"],
+                            ["px-3", "py-3"],
+                            ["text-sm", "font-medium", "text-text-secondary", "rounded-xl"],
+                            ["transition-colors"],
+                            ["hover:bg-error-main/10", "hover:text-error-main"],
+                        )}>
+                        <RiLogoutBoxRLine className={twMerge(["w-5", "h-5"])} />
                         로그아웃
                     </button>
                 </div>

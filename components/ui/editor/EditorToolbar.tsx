@@ -20,13 +20,15 @@ import {
 } from "react-icons/ri";
 import { ChangeEvent, useRef } from "react";
 import { twMerge } from "tailwind-merge";
+import { UploadFileAction } from "@/actions/file/UploadAction";
 
 interface EditorToolbarProps {
     editor: Editor | null;
     onImageUpload?: (file: File) => Promise<string>;
+    enableImageUpload?: boolean;
 }
 
-export const EditorToolbar = ({ editor, onImageUpload }: EditorToolbarProps) => {
+export const EditorToolbar = ({ editor, enableImageUpload }: EditorToolbarProps) => {
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     if (!editor) {
@@ -36,7 +38,7 @@ export const EditorToolbar = ({ editor, onImageUpload }: EditorToolbarProps) => 
     const buttonClass = (isActive: boolean = false) =>
         twMerge(
             "p-2 rounded-md text-text-secondary hover:bg-background-paper hover:text-text-primary transition-colors",
-            isActive && "bg-primary-main/10 text-primary-main font-bold"
+            isActive && "bg-primary-main/10 text-primary-main font-bold",
         );
 
     const setLink = () => {
@@ -59,10 +61,13 @@ export const EditorToolbar = ({ editor, onImageUpload }: EditorToolbarProps) => 
 
     const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
-        if (file && onImageUpload) {
+        if (file && enableImageUpload) {
             try {
-                const url = await onImageUpload(file);
-                editor.chain().focus().setImage({ src: url }).run();
+                const formData = new FormData();
+                formData.append("file", file);
+                formData.append("directory", "editor");
+                const uploadResult = await UploadFileAction(formData);
+                editor.chain().focus().setImage({ src: uploadResult.url }).run();
             } catch (error) {
                 console.error("Image upload failed:", error);
                 alert("이미지 업로드에 실패했습니다.");
@@ -193,7 +198,7 @@ export const EditorToolbar = ({ editor, onImageUpload }: EditorToolbarProps) => 
                 <RiLink className="w-5 h-5" />
             </button>
 
-            {onImageUpload && (
+            {enableImageUpload && (
                 <button
                     type={"button"}
                     onClick={handleImageButtonClick}

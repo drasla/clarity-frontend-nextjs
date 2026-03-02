@@ -1,16 +1,19 @@
 "use server";
 
-import { UploadFileValues, UploadFileSchema } from "./UploadSchema";
+import { UploadFileSchema } from "./UploadSchema";
 import { FileInfo } from "@/graphql/types.generated";
 
 const GRAPHQL_ENDPOINT = process.env.NEXT_PUBLIC_GRAPHQL_API || "http://localhost:8080/api";
 
-export async function UploadFileAction(data: UploadFileValues): Promise<FileInfo> {
+export async function UploadFileAction(clientFormData: FormData): Promise<FileInfo> {
     try {
-        const parsedData = UploadFileSchema.parse(data);
-        const { file, directory } = parsedData;
+        const rawData = {
+            file: clientFormData.get("file"),
+            directory: clientFormData.get("directory")?.toString() || undefined,
+        };
 
-        const formData = new FormData();
+        const parsedData = UploadFileSchema.parse(rawData);
+        const graphqlFormData = new FormData();
 
         const operations = {
             query: `
@@ -26,21 +29,21 @@ export async function UploadFileAction(data: UploadFileValues): Promise<FileInfo
             `,
             variables: {
                 file: null,
-                directory: directory ?? null,
+                directory: parsedData.directory ?? null,
             },
         };
-        formData.append("operations", JSON.stringify(operations));
+        graphqlFormData.append("operations", JSON.stringify(operations));
 
         const map = {
             "0": ["variables.file"],
         };
-        formData.append("map", JSON.stringify(map));
+        graphqlFormData.append("map", JSON.stringify(map));
 
-        formData.append("0", file);
+        graphqlFormData.append("0", parsedData.file as File);
 
         const response = await fetch(GRAPHQL_ENDPOINT, {
             method: "POST",
-            body: formData,
+            body: graphqlFormData,
         });
 
         const result = await response.json();

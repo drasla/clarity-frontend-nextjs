@@ -1,4 +1,5 @@
 import { InquiryCategory, InquiryStatus } from "@/graphql/types.generated";
+import { ChipColor, ChipVariant } from "@/components/ui/common";
 
 export const INQUIRY_CATEGORY_MAP: Record<InquiryCategory, string> = {
     [InquiryCategory.Domain]: "도메인",
@@ -10,15 +11,18 @@ export const INQUIRY_CATEGORY_MAP: Record<InquiryCategory, string> = {
     [InquiryCategory.Etc]: "기타",
 };
 
-export const INQUIRY_STATUS_MAP: Record<InquiryStatus, { label: string; color: string; bg: string }> = {
+export const INQUIRY_STATUS_MAP: Record<
+    InquiryStatus,
+    { label: string; color: ChipColor; variant: ChipVariant }
+> = {
     [InquiryStatus.Pending]: {
         label: "답변대기",
-        color: "text-text-secondary",
-        bg: "bg-background-default border border-divider-main",
+        color: "warning",
+        variant: "soft",
     },
     [InquiryStatus.Completed]: {
         label: "답변완료",
-        color: "text-primary-main",
-        bg: "bg-primary-main/10",
+        color: "success",
+        variant: "soft",
     },
 };

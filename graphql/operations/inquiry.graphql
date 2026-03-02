@@ -48,3 +48,9 @@ query FindManyInquiriesForAdmin($page: PageInput!, $search: InquirySearchInput) 
         }
     }
 }
+
+mutation AnswerInquiry($id: Int!, $input: AnswerInquiryInput!) {
+    answerInquiry(id: $id, input: $input) {
+        ...Inquiry
+    }
+}
