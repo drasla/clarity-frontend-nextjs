@@ -94,6 +94,7 @@ type InquiryList {
 type Mutation {
     _empty: String
     answerInquiry(id: Int!, input: AnswerInquiryInput!): Inquiry!
+    changePassword(input: ChangePasswordInput!): Boolean!
     confirmVerification(code: String!, target: String!, type: VerificationType!): Boolean!
     createEmailTemplate(input: CreateEmailTemplateInput!): EmailTemplate!
     createInquiry(input: CreateInquiryInput!): Inquiry!
@@ -102,6 +103,8 @@ type Mutation {
     login(password: String!, username: String!): Token!
     modifyEmailTemplate(id: Int!, input: ModifyEmailTemplateInput!): EmailTemplate!
     modifyInquiry(id: Int!, input: ModifyInquiryInput!, password: String): Inquiry!
+    modifyUser(input: ModifyUserInput!): User!
+    modifyUserForAdmin(id: ID!, input: ModifyUserForAdminInput!): User!
     refreshToken(token: String!): Token!
     register(input: RegisterInput!): User!
     requestVerification(target: String!, type: VerificationType!): Boolean!
@@ -111,10 +114,12 @@ type Mutation {
 
 type Query {
     _empty: String
+    checkPassword(password: String!): Boolean!
     findManyEmailTemplates(page: PageInput!, search: EmailTemplateSearchInput): EmailTemplateList!
     findManyInquiriesForAdmin(page: PageInput!, search: InquirySearchInput): InquiryList!
     findManyMyInquiries(page: PageInput!): InquiryList!
     findManyPublicInquiries(page: PageInput!, search: InquirySearchInput): InquiryList!
+    findManyUserForAdmin(page: PageInput!, search: UserSearchInput): UserList!
     findOneEmailTemplateById(id: Int!): EmailTemplate!
     findOneInquiryById(id: Int!, password: String): Inquiry!
     me: User
@@ -140,6 +145,13 @@ type User {
     type: UserType!
     updatedAt: Time!
     username: String!
+}
+
+type UserList {
+    list: [User!]!
+    page: Int!
+    size: Int!
+    total: Int!
 }
 
 enum InquiryCategory {
@@ -200,6 +212,11 @@ input BusinessInput {
     bizZipCode: String!
 }
 
+input ChangePasswordInput {
+    newPassword: String!
+    oldPassword: String!
+}
+
 input CreateEmailTemplateInput {
     description: String
     htmlBody: String!
@@ -256,6 +273,45 @@ input ModifyInquiryInput {
     title: String
 }
 
+input ModifyUserForAdminInput {
+    agreeEmail: Boolean
+    agreeSms: Boolean
+    bizAddress1: String
+    bizAddress2: String
+    bizCeo: String
+    bizItem: String
+    bizLicenseUrl: String
+    bizRegNumber: String
+    bizType: String
+    bizZipCode: String
+    email: String
+    landlineNumber: String
+    name: String
+    password: String
+    phoneNumber: String
+    role: UserRole
+    status: UserStatus
+    type: UserType
+}
+
+input ModifyUserInput {
+    agreeEmail: Boolean
+    agreeSms: Boolean
+    bizAddress1: String
+    bizAddress2: String
+    bizCeo: String
+    bizItem: String
+    bizLicenseUrl: String
+    bizRegNumber: String
+    bizType: String
+    bizZipCode: String
+    email: String
+    landlineNumber: String
+    name: String
+    phoneNumber: String
+    type: UserType
+}
+
 input PageInput {
     page: Int! = 1
     size: Int! = 10
@@ -271,4 +327,11 @@ input RegisterInput {
     password: String!
     phoneNumber: String!
     username: String!
+}
+
+input UserSearchInput {
+    keyword: String
+    role: UserRole
+    status: UserStatus
+    type: UserType
 }

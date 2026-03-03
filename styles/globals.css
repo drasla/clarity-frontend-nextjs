@@ -10,8 +10,8 @@
     "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji",
     "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
 
-    --bg-default: #ffffff;
-    --bg-paper: #f5f6f8;
+    --bg-default: #FCFAF6;
+    --bg-paper: #FFFFFF;
 
     --text-primary: #111827;
     --text-secondary: #6b7280;
@@ -22,8 +22,8 @@
 }
 
 .dark {
-    --bg-default: #202020;
-    --bg-paper: #292929;
+    --bg-default: #211F1C;
+    --bg-paper: #1B1A17;
 
     --text-primary: #f3f4f6;
     --text-secondary: #9ca3af;

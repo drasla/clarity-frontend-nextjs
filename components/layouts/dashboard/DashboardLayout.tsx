@@ -44,7 +44,7 @@ function SharedDashboardLayout({ menus, basePath, children }: SharedDashboardLay
                         ["flex", "items-center", "justify-between", "shrink-0"],
                         ["h-16", "lg:h-20", "px-4", "lg:px-8"],
                         ["sticky", "top-0", "left-0", "right-0", "z-40"],
-                        ["bg-background-default/80", "backdrop-blur-md"],
+                        ["bg-background-paper", "backdrop-blur-md"],
                         ["border-b", "border-divider-main/50"],
                         ["transition-all", "duration-300"],
                     )}>

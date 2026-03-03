@@ -60,7 +60,7 @@ function Header() {
                 className={twMerge(
                     ["sticky", "top-0", "w-full", "h-15", "backdrop-blur-xl", "z-30"],
                     ["flex", "justify-center", "box-border"],
-                    ["border-b", "border-divider-main"],
+                    ["bg-background-paper", "border-b", "border-divider-main"],
                 )}>
                 <header
                     className={twMerge(

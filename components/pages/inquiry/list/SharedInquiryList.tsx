@@ -14,6 +14,8 @@ import { INQUIRY_CATEGORY_MAP, INQUIRY_STATUS_MAP } from "@/constants/inquiry";
 import { InquiryFragment } from "@/graphql/graphql.generated";
 import { SyntheticEvent } from "react";
 import Chip from "@/components/ui/chip/Chip";
+import PageHeader from "@/components/ui/header/PageHeader";
+import Card from "@/components/ui/card/Card";
 
 interface SharedInquiryListProps {
     title: string;
@@ -60,39 +62,27 @@ export default function SharedInquiryList({
 
     return (
         <div className="w-full">
-            <div
-                className={twMerge(
-                    ["mb-6", "flex", "flex-col", "md:flex-row"],
-                    ["md:items-end", "justify-between", "gap-4"],
-                )}>
-                <div>
-                    <h1
-                        className={twMerge(
-                            ["text-2xl", "md:text-3xl", "font-bold", "text-text-primary"],
-                            ["mb-2"],
-                        )}>
-                        {title}
-                    </h1>
-                    <p className={twMerge(["text-sm", "text-text-secondary", "mt-1"])}>
-                        {description}
-                    </p>
-                </div>
-                {showWriteButton && (
-                    <Link href={`${basePath}/write`}>
-                        <Button>새 문의 작성</Button>
-                    </Link>
-                )}
-            </div>
+            <PageHeader
+                title={title}
+                description={description}
+                action={
+                    showWriteButton && (
+                        <Link href={`${basePath}/write`}>
+                            <Button>새 문의 작성</Button>
+                        </Link>
+                    )
+                }
+            />
 
-            <div
+            <Card
                 className={twMerge(
-                    ["mb-4", "p-4", "bg-background-paper", "border", "border-divider-main"],
-                    ["rounded-xl", "flex", "flex-col", "md:flex-row", "md:items-center", "gap-3"],
+                    ["p-3", "md:p-3", "mb-5"],
+                    ["flex", "flex-col", "md:flex-row", "md:items-center", "gap-3"],
                 )}>
                 <div className={twMerge(["flex", "w-full", "md:w-auto", "gap-3", "shrink-0"])}>
                     <Select
                         fullWidth
-                        className={"md:w-40 bg-background-default"}
+                        className={"md:w-40"}
                         value={searchParams.get("category") || ""}
                         onChange={e => updateSearchParams("category", e.target.value)}>
                         <option value="">전체 유형</option>
@@ -106,7 +96,7 @@ export default function SharedInquiryList({
 
                     <Select
                         fullWidth
-                        className={"md:w-32 bg-background-default"}
+                        className={"md:w-32"}
                         value={searchParams.get("status") || ""}
                         onChange={e => updateSearchParams("status", e.target.value)}>
                         <option value="">전체 상태</option>
@@ -126,16 +116,15 @@ export default function SharedInquiryList({
                         fullWidth
                         placeholder="제목 또는 내용 검색"
                         defaultValue={searchParams.get("keyword") || ""}
-                        className={"bg-background-default"}
                     />
                     <Button
                         type="submit"
                         variant="outlined"
-                        className={"bg-background-default shrink-0"}>
+                        className={"shrink-0"}>
                         검색
                     </Button>
                 </form>
-            </div>
+            </Card>
 
             <Table>
                 <TableHeader
@@ -151,8 +140,6 @@ export default function SharedInquiryList({
                     {list.map((inquiry, index) => {
                         const itemNumber = total - (page - 1) * size - index;
                         const statusInfo = INQUIRY_STATUS_MAP[inquiry.status as InquiryStatus];
-
-                        console.log(statusInfo);
 
                         return (
                             <TableRow key={inquiry.id} href={`${basePath}/${inquiry.id}`}>

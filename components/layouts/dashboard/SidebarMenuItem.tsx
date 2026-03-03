@@ -14,27 +14,26 @@ interface SidebarMenuItemProps {
     onClose?: () => void;
 }
 
-export function SidebarMenuItem({ menu, basePath, depth = 0, onClose }: SidebarMenuItemProps) {
+function SidebarMenuItem({ menu, basePath, depth = 0, onClose }: SidebarMenuItemProps) {
     const pathname = usePathname();
     const hasChildren = !!(menu.children && menu.children.length > 0);
 
-    const isActive = menu.href
-        ? menu.href === basePath
-            ? pathname === basePath
-            : pathname.startsWith(menu.href)
-        : false;
+    const checkIsActive = (targetHref?: string, exact?: boolean) => {
+        if (!targetHref) return false;
+
+        if (exact || targetHref === basePath) {
+            return pathname === targetHref;
+        }
+
+        return pathname === targetHref || pathname.startsWith(`${targetHref}/`);
+    };
+
+    const isActive = checkIsActive(menu.href, menu.exact);
 
     const isChildActive =
-        hasChildren &&
-        menu.children?.some(child =>
-            child.href
-                ? child.href === basePath
-                    ? pathname === basePath
-                    : pathname.startsWith(child.href)
-                : false,
-        );
+        hasChildren && menu.children?.some(child => checkIsActive(child.href, child.exact));
 
-    const [isOpen, setIsOpen] = useState(isChildActive || false);
+    const [isOpen, setIsOpen] = useState(isChildActive || menu.defaultOpen || false);
 
     useEffect(() => {
         if (isChildActive) setIsOpen(true);
@@ -42,14 +41,16 @@ export function SidebarMenuItem({ menu, basePath, depth = 0, onClose }: SidebarM
 
     const handleToggle = () => setIsOpen(prev => !prev);
 
+    const isHighlighted = isActive || isChildActive;
+
     const itemClassName = twMerge(
         ["flex", "items-center", "justify-between", "w-full"],
         ["py-2.5", "pr-3", "mb-1"],
-        depth === 0 ? ["pl-3"] : ["pl-10"],
+        depth === 0 ? ["pl-3"] : ["pl-5"],
         ["rounded-xl"],
         ["text-sm", "font-medium"],
         ["transition-all", "duration-200"],
-        isActive || (isChildActive && !isOpen)
+        isHighlighted
             ? ["bg-primary-main/10", "text-primary-main", "font-bold"]
             : ["text-text-secondary", "hover:bg-background-paper", "hover:text-text-primary"],
     );
@@ -63,7 +64,7 @@ export function SidebarMenuItem({ menu, basePath, depth = 0, onClose }: SidebarM
                             <menu.icon
                                 className={twMerge(
                                     ["w-5", "h-5"],
-                                    isChildActive ? ["text-primary-main"] : ["text-text-secondary"],
+                                    isHighlighted ? ["text-primary-main"] : ["text-text-secondary"],
                                 )}
                             />
                         )}
@@ -74,8 +75,8 @@ export function SidebarMenuItem({ menu, basePath, depth = 0, onClose }: SidebarM
                         className={twMerge(
                             ["w-4", "h-4"],
                             ["transition-transform", "duration-300"],
-                            isOpen ? ["rotate-180"] : ["rotate-0"],
-                            isChildActive ? ["text-primary-main"] : ["text-text-secondary"],
+                            isOpen ? ["rotate-0"] : ["rotate-270"],
+                            isHighlighted ? ["text-primary-main"] : ["text-text-secondary"],
                         )}
                     />
                 </button>
@@ -136,3 +137,5 @@ export function SidebarMenuItem({ menu, basePath, depth = 0, onClose }: SidebarM
         </Link>
     );
 }
+
+export default SidebarMenuItem;

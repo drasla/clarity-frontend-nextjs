@@ -6,7 +6,7 @@ import { InquiryFragment } from "@/graphql/graphql.generated";
 import { FindOneInquiryAction } from "@/actions/inquiry/findOne/FindOneInquiryAction";
 import { HexagonLoader } from "@/components/ui/loader/HexagonLoader";
 import { InquiryStatus } from "@/graphql/types.generated";
-import { Editor } from "@/components/ui/editor/Editor"; // 가지고 계신 에디터 컴포넌트
+import { Editor } from "@/components/ui/editor/Editor";
 import { Button } from "@/components/ui/button/Button";
 import SharedInquiryDetail from "@/components/pages/inquiry/detail/SharedInquiryDetail";
 import AnswerInquiryAction from "@/actions/inquiry/answer/AnswerInquiryAction";
@@ -125,6 +125,7 @@ export default function AdminInquiryDetailPage() {
                         onChange={html => setAnswerContent(html)}
                         enableImageUpload={true}
                         placeholder="답변 내용을 자세히 입력해주세요."
+                        className={"bg-background-default"}
                     />
                     <div className="mt-4 flex justify-end gap-3">
                         {isEditing && (

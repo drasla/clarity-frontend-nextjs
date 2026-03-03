@@ -8,7 +8,7 @@ import Image from "next/image";
 import { Backdrop } from "@/components/ui/backdrop/Backdrop";
 import LogoutAction from "@/actions/auth/logout/LogoutAction";
 import { SidebarMenu } from "@/constants/menus";
-import { SidebarMenuItem } from "@/components/layouts/dashboard/SidebarMenuItem";
+import SidebarMenuItem from "@/components/layouts/dashboard/SidebarMenuItem";
 
 interface SharedSidebarProps {
     isOpen: boolean;
@@ -37,7 +37,7 @@ function SharedSidebar({ isOpen, onClose, menus, basePath }: SharedSidebarProps)
                     ["fixed", "inset-y-0", "left-0", "z-50"],
                     ["flex", "flex-col", "shrink-0"],
                     ["w-full", "lg:w-64", "h-full"],
-                    ["bg-background-default"],
+                    ["bg-background-paper"],
                     ["lg:border-r", "border-divider-main"],
                     ["transform", "transition-transform", "duration-300", "ease-in-out"],
                     isOpen ? ["translate-x-0"] : ["-translate-x-full"],

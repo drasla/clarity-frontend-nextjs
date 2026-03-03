@@ -6,9 +6,11 @@ import { twMerge } from "tailwind-merge";
 import dayjs from "dayjs";
 import { HiDownload, HiOutlinePaperClip } from "react-icons/hi";
 import { Button } from "@/components/ui/button/Button";
-import { InquiryStatus } from "@/graphql/types.generated";
+import { InquiryCategory, InquiryStatus } from "@/graphql/types.generated";
 import { InquiryFragment } from "@/graphql/graphql.generated";
 import { INQUIRY_CATEGORY_MAP, INQUIRY_STATUS_MAP } from "@/constants/inquiry";
+import PageHeader from "@/components/ui/header/PageHeader";
+import Chip from "@/components/ui/chip/Chip";
 
 interface SharedInquiryDetailProps {
     title: string;
@@ -34,19 +36,15 @@ function SharedInquiryDetail({
 
     return (
         <div className="w-full">
-            <div className={twMerge(["mb-6", "flex", "items-center", "justify-between", "gap-5"])}>
-                <div className={twMerge(["flex-1"])}>
-                    <h1 className={twMerge(["text-2xl", "font-bold", "text-text-primary"])}>
-                        {title}
-                    </h1>
-                    <p className={twMerge(["text-sm", "text-text-secondary", "mt-1"])}>
-                        {description}
-                    </p>
-                </div>
-                <Button variant="outlined" size="small" onClick={() => router.push(basePath)}>
-                    목록으로
-                </Button>
-            </div>
+            <PageHeader
+                title={title}
+                description={description}
+                action={
+                    <Button variant="outlined" size="small" onClick={() => router.push(basePath)}>
+                        목록으로
+                    </Button>
+                }
+            />
 
             <div
                 className={twMerge(
@@ -59,25 +57,16 @@ function SharedInquiryDetail({
                         ["border-divider-main", "bg-background-paper"],
                     )}>
                     <div className={twMerge(["flex", "items-center", "gap-3", "mb-4"])}>
-                        <span
-                            className={twMerge(
-                                ["px-3", "py-1", "text-sm", "font-bold", "rounded-md"],
-                                ["bg-divider-main/20", "text-text-secondary"],
-                            )}>
-                            {
-                                INQUIRY_CATEGORY_MAP[
-                                    inquiryData.category as keyof typeof INQUIRY_CATEGORY_MAP
-                                ]
-                            }
-                        </span>
-                        <span
-                            className={twMerge(
-                                ["px-3", "py-1", "text-sm", "font-bold", "rounded-md"],
-                                statusInfo.bg,
-                                statusInfo.color,
-                            )}>
-                            {statusInfo.label}
-                        </span>
+                        <Chip
+                            label={INQUIRY_CATEGORY_MAP[inquiryData.category as InquiryCategory]}
+                            color="default"
+                            variant="soft"
+                        />
+                        <Chip
+                            label={statusInfo.label}
+                            color={statusInfo.color}
+                            variant={statusInfo.variant}
+                        />
                     </div>
 
                     <h2
@@ -171,7 +160,6 @@ function SharedInquiryDetail({
                                             )}
                                         </span>
                                     )}
-                                    {/* 💡 확장 슬롯: 여기에 '수정하기' 버튼이 들어옵니다. */}
                                     {answerActionNode}
                                 </div>
                             </div>

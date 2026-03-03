@@ -35,6 +35,8 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             className,
             id,
             onChange,
+            placeholder,
+            disabled,
             ...props
         },
         ref,
@@ -42,11 +44,14 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         const generatedId = useId();
         const inputId = id || generatedId;
         const activeColor = error ? "error" : color;
+        const hasPlaceholder = Boolean(placeholder);
 
         const legendWidthClass = label
             ? twMerge([
                   "peer-focus:[&>legend]:max-w-full",
-                  "peer-[:not(:placeholder-shown)]:[&>legend]:max-w-full",
+                  hasPlaceholder
+                      ? ["[&>legend]:max-w-full"]
+                      : ["peer-[:not(:placeholder-shown)]:[&>legend]:max-w-full"],
               ])
             : "";
 
@@ -77,12 +82,13 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
                     <input
                         id={inputId}
                         ref={ref}
-                        placeholder={" "}
+                        placeholder={placeholder || " "}
                         onChange={handleChange}
                         className={twMerge(
                             ["relative", "peer", "z-10", "w-full"],
                             ["rounded-md", "bg-transparent", "outline-none", "border-none"],
                             ["transition-all", "duration-200"],
+                            disabled ? ["cursor-not-allowed", "text-text-disabled"] : [],
                             StylesSizeClasses[size],
                             className,
                         )}
@@ -97,6 +103,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
                             ["transition-colors", "duration-200"],
                             "peer-focus:border-2",
                             StylesFieldColorClasses[activeColor].field,
+                            disabled ? ["opacity-60", "bg-background-default/50"] : [],
                             legendWidthClass,
                         )}>
                         <legend
@@ -114,20 +121,24 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
                             className={twMerge(
                                 ["absolute", "left-3", "origin-left", "cursor-text"],
                                 ["px-1", "pointer-events-none", "z-12"],
-                                ["transition-all", "duration-200", "scale-75", "-translate-y-1/2"],
-                                [
-                                    "peer-placeholder-shown:top-1/2",
-                                    "peer-placeholder-shown:-translate-y-1/2",
-                                    "peer-placeholder-shown:scale-100",
-                                ],
-                                [
-                                    "top-0",
-                                    "peer-focus:top-0",
-                                    "peer-focus:-translate-y-1/2",
-                                    "peer-focus:scale-75",
-                                ],
-                                activeColor !== "error" && "text-text-secondary",
-                                StylesFieldColorClasses[activeColor].label,
+                                ["transition-all", "duration-200", "-translate-y-1/2"],
+                                disabled ? ["cursor-not-allowed"] : ["cursor-text"],
+                                hasPlaceholder
+                                    ? ["top-0", "scale-75"]
+                                    : [
+                                          "top-0",
+                                          "scale-75",
+                                          "peer-placeholder-shown:top-1/2",
+                                          "peer-placeholder-shown:scale-100",
+                                          "peer-focus:top-0",
+                                          "peer-focus:scale-75",
+                                      ],
+                                disabled
+                                    ? ["text-text-disabled"]
+                                    : activeColor !== "error"
+                                      ? ["text-text-secondary"]
+                                      : [],
+                                !disabled && StylesFieldColorClasses[activeColor].label,
                             )}>
                             {label}
                         </label>
@@ -137,7 +148,8 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
                     <span
                         className={twMerge(
                             ["mx-3", "text-xs"],
-                            error ? ["text-red-500"] : ["text-gray-500", "dark:text-gray-400"],
+                            error ? ["text-error-main"] : ["text-text-secondary"],
+                            disabled ? ["opacity-60"] : [],
                         )}>
                         {helperText}
                     </span>

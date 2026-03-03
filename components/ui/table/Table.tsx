@@ -13,7 +13,7 @@ export const Table = ({ children, className }: TableProps) => {
     return (
         <div
             className={twMerge(
-                ["bg-background-default", "border", "border-divider-main", "rounded-2xl"],
+                ["bg-background-paper", "border", "border-divider-main", "rounded-2xl", "shadow-lg"],
                 ["overflow-hidden"],
                 className,
             )}>
@@ -34,7 +34,7 @@ export const TableHeader = ({ columns, className }: { columns: Column[]; classNa
         <thead
             className={twMerge(
                 ["hidden", "md:table-header-group"],
-                ["bg-background-paper", "border-b", "border-divider-main"],
+                ["bg-divider-main/30", "border-b", "border-divider-main"],
                 className,
             )}>
             <tr>

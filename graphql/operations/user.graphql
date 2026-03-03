@@ -3,3 +3,17 @@ query GetMe {
         ...User
     }
 }
+
+query CheckPassword($password: String!) {
+    checkPassword(password: $password)
+}
+
+mutation ChangePassword($input: ChangePasswordInput!) {
+    changePassword(input: $input)
+}
+
+mutation ModifyUser($input: ModifyUserInput!) {
+    modifyUser(input: $input) {
+        ...User
+    }
+}

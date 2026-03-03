@@ -3,7 +3,7 @@ import { UserType } from "@/graphql/types.generated";
 
 const baseSchema = z.object({
     username: z.string().min(1, "아이디를 입력해주세요."),
-    password: z.string().min(1, "비밀번호를 입력해주세요."),
+    password: z.string().min(8, "비밀번호는 8자 이상이어야 합니다."),
     passwordConfirm: z.string().min(1, "비밀번호를 한 번 더 입력해주세요."),
     name: z.string().min(1, "이름(또는 사업자명)을 입력해주세요."),
     email: z.email("올바른 이메일 형식이 아닙니다."),

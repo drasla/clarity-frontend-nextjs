@@ -46,6 +46,11 @@ export type BusinessInput = {
   bizZipCode: Scalars['String']['input'];
 };
 
+export type ChangePasswordInput = {
+  newPassword: Scalars['String']['input'];
+  oldPassword: Scalars['String']['input'];
+};
+
 export type CreateEmailTemplateInput = {
   description?: InputMaybe<Scalars['String']['input']>;
   htmlBody: Scalars['String']['input'];
@@ -183,10 +188,29 @@ export type ModifyInquiryInput = {
   title?: InputMaybe<Scalars['String']['input']>;
 };
 
+export type ModifyUserInput = {
+  agreeEmail?: InputMaybe<Scalars['Boolean']['input']>;
+  agreeSms?: InputMaybe<Scalars['Boolean']['input']>;
+  bizAddress1?: InputMaybe<Scalars['String']['input']>;
+  bizAddress2?: InputMaybe<Scalars['String']['input']>;
+  bizCeo?: InputMaybe<Scalars['String']['input']>;
+  bizItem?: InputMaybe<Scalars['String']['input']>;
+  bizLicenseUrl?: InputMaybe<Scalars['String']['input']>;
+  bizRegNumber?: InputMaybe<Scalars['String']['input']>;
+  bizType?: InputMaybe<Scalars['String']['input']>;
+  bizZipCode?: InputMaybe<Scalars['String']['input']>;
+  email?: InputMaybe<Scalars['String']['input']>;
+  landlineNumber?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  phoneNumber?: InputMaybe<Scalars['String']['input']>;
+  type?: InputMaybe<UserType>;
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   _empty?: Maybe<Scalars['String']['output']>;
   answerInquiry: Inquiry;
+  changePassword: Scalars['Boolean']['output'];
   confirmVerification: Scalars['Boolean']['output'];
   createEmailTemplate: EmailTemplate;
   createInquiry: Inquiry;
@@ -195,6 +219,7 @@ export type Mutation = {
   login: Token;
   modifyEmailTemplate: EmailTemplate;
   modifyInquiry: Inquiry;
+  modifyUser: User;
   refreshToken: Token;
   register: User;
   requestVerification: Scalars['Boolean']['output'];
@@ -206,6 +231,11 @@ export type Mutation = {
 export type MutationAnswerInquiryArgs = {
   id: Scalars['Int']['input'];
   input: AnswerInquiryInput;
+};
+
+
+export type MutationChangePasswordArgs = {
+  input: ChangePasswordInput;
 };
 
 
@@ -256,6 +286,11 @@ export type MutationModifyInquiryArgs = {
 };
 
 
+export type MutationModifyUserArgs = {
+  input: ModifyUserInput;
+};
+
+
 export type MutationRefreshTokenArgs = {
   token: Scalars['String']['input'];
 };
@@ -285,6 +320,7 @@ export type PageInput = {
 export type Query = {
   __typename?: 'Query';
   _empty?: Maybe<Scalars['String']['output']>;
+  checkPassword: Scalars['Boolean']['output'];
   findManyEmailTemplates: EmailTemplateList;
   findManyInquiriesForAdmin: InquiryList;
   findManyMyInquiries: InquiryList;
@@ -292,6 +328,11 @@ export type Query = {
   findOneEmailTemplateById: EmailTemplate;
   findOneInquiryById: Inquiry;
   me?: Maybe<User>;
+};
+
+
+export type QueryCheckPasswordArgs = {
+  password: Scalars['String']['input'];
 };
 
 
