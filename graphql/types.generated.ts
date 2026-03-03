@@ -53,7 +53,8 @@ export type ChangePasswordInput = {
 
 export type CreateEmailTemplateInput = {
   description?: InputMaybe<Scalars['String']['input']>;
-  htmlBody: Scalars['String']['input'];
+  design: Scalars['String']['input'];
+  html: Scalars['String']['input'];
   subject: Scalars['String']['input'];
   templateCode: Scalars['String']['input'];
   variables?: InputMaybe<Scalars['String']['input']>;
@@ -74,7 +75,8 @@ export type EmailTemplate = {
   __typename?: 'EmailTemplate';
   createdAt: Scalars['Time']['output'];
   description?: Maybe<Scalars['String']['output']>;
-  htmlBody: Scalars['String']['output'];
+  design: Scalars['String']['output'];
+  html: Scalars['String']['output'];
   id: Scalars['Int']['output'];
   subject: Scalars['String']['output'];
   templateCode: Scalars['String']['output'];
@@ -172,7 +174,8 @@ export enum InquiryStatus {
 
 export type ModifyEmailTemplateInput = {
   description?: InputMaybe<Scalars['String']['input']>;
-  htmlBody?: InputMaybe<Scalars['String']['input']>;
+  design?: InputMaybe<Scalars['String']['input']>;
+  html?: InputMaybe<Scalars['String']['input']>;
   subject?: InputMaybe<Scalars['String']['input']>;
   templateCode?: InputMaybe<Scalars['String']['input']>;
   variables?: InputMaybe<Scalars['String']['input']>;
@@ -186,6 +189,27 @@ export type ModifyInquiryInput = {
   email?: InputMaybe<Scalars['String']['input']>;
   phoneNumber?: InputMaybe<Scalars['String']['input']>;
   title?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type ModifyUserForAdminInput = {
+  agreeEmail?: InputMaybe<Scalars['Boolean']['input']>;
+  agreeSms?: InputMaybe<Scalars['Boolean']['input']>;
+  bizAddress1?: InputMaybe<Scalars['String']['input']>;
+  bizAddress2?: InputMaybe<Scalars['String']['input']>;
+  bizCeo?: InputMaybe<Scalars['String']['input']>;
+  bizItem?: InputMaybe<Scalars['String']['input']>;
+  bizLicenseUrl?: InputMaybe<Scalars['String']['input']>;
+  bizRegNumber?: InputMaybe<Scalars['String']['input']>;
+  bizType?: InputMaybe<Scalars['String']['input']>;
+  bizZipCode?: InputMaybe<Scalars['String']['input']>;
+  email?: InputMaybe<Scalars['String']['input']>;
+  landlineNumber?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  password?: InputMaybe<Scalars['String']['input']>;
+  phoneNumber?: InputMaybe<Scalars['String']['input']>;
+  role?: InputMaybe<UserRole>;
+  status?: InputMaybe<UserStatus>;
+  type?: InputMaybe<UserType>;
 };
 
 export type ModifyUserInput = {
@@ -220,6 +244,7 @@ export type Mutation = {
   modifyEmailTemplate: EmailTemplate;
   modifyInquiry: Inquiry;
   modifyUser: User;
+  modifyUserForAdmin: User;
   refreshToken: Token;
   register: User;
   requestVerification: Scalars['Boolean']['output'];
@@ -291,6 +316,12 @@ export type MutationModifyUserArgs = {
 };
 
 
+export type MutationModifyUserForAdminArgs = {
+  id: Scalars['ID']['input'];
+  input: ModifyUserForAdminInput;
+};
+
+
 export type MutationRefreshTokenArgs = {
   token: Scalars['String']['input'];
 };
@@ -325,8 +356,10 @@ export type Query = {
   findManyInquiriesForAdmin: InquiryList;
   findManyMyInquiries: InquiryList;
   findManyPublicInquiries: InquiryList;
+  findManyUserForAdmin: UserList;
   findOneEmailTemplateById: EmailTemplate;
   findOneInquiryById: Inquiry;
+  findOneUserForAdmin: User;
   me?: Maybe<User>;
 };
 
@@ -359,6 +392,12 @@ export type QueryFindManyPublicInquiriesArgs = {
 };
 
 
+export type QueryFindManyUserForAdminArgs = {
+  page: PageInput;
+  search?: InputMaybe<UserSearchInput>;
+};
+
+
 export type QueryFindOneEmailTemplateByIdArgs = {
   id: Scalars['Int']['input'];
 };
@@ -367,6 +406,11 @@ export type QueryFindOneEmailTemplateByIdArgs = {
 export type QueryFindOneInquiryByIdArgs = {
   id: Scalars['Int']['input'];
   password?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+export type QueryFindOneUserForAdminArgs = {
+  id: Scalars['ID']['input'];
 };
 
 export type RegisterInput = {
@@ -405,10 +449,25 @@ export type User = {
   username: Scalars['String']['output'];
 };
 
+export type UserList = {
+  __typename?: 'UserList';
+  list: Array<User>;
+  page: Scalars['Int']['output'];
+  size: Scalars['Int']['output'];
+  total: Scalars['Int']['output'];
+};
+
 export enum UserRole {
   Admin = 'ADMIN',
   User = 'USER'
 }
+
+export type UserSearchInput = {
+  keyword?: InputMaybe<Scalars['String']['input']>;
+  role?: InputMaybe<UserRole>;
+  status?: InputMaybe<UserStatus>;
+  type?: InputMaybe<UserType>;
+};
 
 export enum UserStatus {
   Active = 'ACTIVE',

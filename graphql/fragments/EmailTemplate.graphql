@@ -1,0 +1,11 @@
+fragment EmailTemplate on EmailTemplate {
+    id
+    createdAt
+    updatedAt
+    templateCode
+    subject
+    description
+    html
+    design
+    variables
+}

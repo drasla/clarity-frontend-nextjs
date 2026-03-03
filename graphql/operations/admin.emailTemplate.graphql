@@ -1,0 +1,16 @@
+query FindManyEmailTemplates($page: PageInput!, $search: EmailTemplateSearchInput) {
+    findManyEmailTemplates(page: $page, search: $search) {
+        list {
+            ...EmailTemplate
+        }
+        page
+        size
+        total
+    }
+}
+
+mutation CreateEmailTemplate($input: CreateEmailTemplateInput!) {
+    createEmailTemplate(input: $input) {
+        ...EmailTemplate
+    }
+}

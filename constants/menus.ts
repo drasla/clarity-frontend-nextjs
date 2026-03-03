@@ -80,5 +80,9 @@ export const ADMIN_SIDEBAR_MENUS: SidebarMenu[] = [
         ],
     },
     { label: "문의 관리 (CS)", href: "/admin/inquiries", icon: HiOutlineTicket },
-    { label: "시스템 설정", href: "/admin/settings", icon: HiOutlineCog },
+    {
+        label: "시스템 설정",
+        icon: HiOutlineCog,
+        children: [{ label: "이메일 템플릿", href: "/admin/templates/email" }],
+    },
 ];

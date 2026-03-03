@@ -71,6 +71,9 @@ importers:
       react-dom:
         specifier: ^19.2.4
         version: 19.2.4(react@19.2.4)
+      react-email-editor:
+        specifier: ^1.7.11
+        version: 1.7.11(react@19.2.4)
       react-hook-form:
         specifier: ^7.71.1
         version: 7.71.1(react@19.2.4)
@@ -3379,6 +3382,12 @@ packages:
     peerDependencies:
       react: ^19.2.4
 
+  react-email-editor@1.7.11:
+    resolution: {integrity: sha512-AyoKKtMEPhKdqUxFX1hyJMvEO+E5fzk88uNVGHhK1ymhLpcghYLkz1+pXKLcByjR6LHkfEbrCmoYFG8zyripug==}
+    engines: {node: '>=10'}
+    peerDependencies:
+      react: '>=15'
+
   react-hook-form@7.71.1:
     resolution: {integrity: sha512-9SUJKCGKo8HUSsCO+y0CtqkqI5nNuaDqTxyqPsZPqIwudpj4rCrAz/jZV+jn57bx5gtZKOh3neQu94DXMc+w5w==}
     engines: {node: '>=18.0.0'}
@@ -3761,6 +3770,9 @@ packages:
   unixify@1.0.0:
     resolution: {integrity: sha512-6bc58dPYhCMHHuwxldQxO3RRNZ4eCogZ/st++0+fcC1nr0jiGUtAdBJ2qzmLQWSxbtz42pWt4QQMiZ9HvZf5cg==}
     engines: {node: '>=0.10.0'}
+
+  unlayer-types@1.383.0:
+    resolution: {integrity: sha512-w7TJ3J4XP30fW33U6AUopxallXq05v0v+agNkhaio5Qlf+UM116nvd2jhsBFRfucok/Qi3QXERMaWBpbJ9p1zQ==}
 
   unrs-resolver@1.11.1:
     resolution: {integrity: sha512-bSjt9pjaEBnNiGgc9rUiHGKv5l4/TGzDmYw3RhnkJGtLhbnnA/5qJj7x3dNDCRx/PJxu774LlH8lCOlB4hEfKg==}
@@ -7644,6 +7656,11 @@ snapshots:
       react: 19.2.4
       scheduler: 0.27.0
 
+  react-email-editor@1.7.11(react@19.2.4):
+    dependencies:
+      react: 19.2.4
+      unlayer-types: 1.383.0
+
   react-hook-form@7.71.1(react@19.2.4):
     dependencies:
       react: 19.2.4
@@ -8108,6 +8125,8 @@ snapshots:
   unixify@1.0.0:
     dependencies:
       normalize-path: 2.1.1
+
+  unlayer-types@1.383.0: {}
 
   unrs-resolver@1.11.1:
     dependencies:

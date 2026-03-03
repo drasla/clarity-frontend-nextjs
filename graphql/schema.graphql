@@ -34,7 +34,8 @@ type BusinessInfo {
 type EmailTemplate {
     createdAt: Time!
     description: String
-    htmlBody: String!
+    design: String!
+    html: String!
     id: Int!
     subject: String!
     templateCode: String!
@@ -122,6 +123,7 @@ type Query {
     findManyUserForAdmin(page: PageInput!, search: UserSearchInput): UserList!
     findOneEmailTemplateById(id: Int!): EmailTemplate!
     findOneInquiryById(id: Int!, password: String): Inquiry!
+    findOneUserForAdmin(id: ID!): User!
     me: User
 }
 
@@ -219,7 +221,8 @@ input ChangePasswordInput {
 
 input CreateEmailTemplateInput {
     description: String
-    htmlBody: String!
+    design: String!
+    html: String!
     subject: String!
     templateCode: String!
     variables: String
@@ -257,7 +260,8 @@ input InquirySearchInput {
 
 input ModifyEmailTemplateInput {
     description: String
-    htmlBody: String
+    design: String
+    html: String
     subject: String
     templateCode: String
     variables: String

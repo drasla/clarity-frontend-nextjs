@@ -13,7 +13,13 @@ export const Table = ({ children, className }: TableProps) => {
     return (
         <div
             className={twMerge(
-                ["bg-background-paper", "border", "border-divider-main", "rounded-2xl", "shadow-lg"],
+                [
+                    "bg-background-paper",
+                    "border",
+                    "border-divider-main",
+                    "rounded-2xl",
+                    "shadow-lg",
+                ],
                 ["overflow-hidden"],
                 className,
             )}>
@@ -111,7 +117,7 @@ export const TableRow = ({ children, href, className }: RowProps) => {
         <tr
             onClick={handleClick}
             className={twMerge(
-                ["flex", "flex-col", "md:table-row", "p-4", "md:p-0", "transition-colors"],
+                ["flex", "flex-col", "md:table-row", "p-4", "md:p-0", "gap-2", "transition-colors"],
                 href ? ["cursor-pointer", "hover:bg-background-paper", "group"] : "",
                 className,
             )}>

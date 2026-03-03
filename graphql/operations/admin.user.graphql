@@ -1,0 +1,22 @@
+query FindManyUserForAdmin($page: PageInput!, $search: UserSearchInput) {
+    findManyUserForAdmin(page: $page, search: $search) {
+        list {
+            ...User
+        }
+        page
+        size
+        total
+    }
+}
+
+query FindOneUserForAdmin($id: ID!) {
+    findOneUserForAdmin(id: $id) {
+        ...User
+    }
+}
+
+mutation ModifyUserForAdmin($id: ID!, $input: ModifyUserForAdminInput!) {
+    modifyUserForAdmin(id: $id, input: $input) {
+        ...User
+    }
+}
