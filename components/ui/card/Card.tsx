@@ -12,7 +12,7 @@ function Card({ children, className, ...props }: CardProps){
             className={twMerge(
                 ["w-full", "p-6", "md:p-8"],
                 ["bg-background-paper", "rounded-xl"],
-                ["border", "border-divider-main", "shadow-lg"],
+                ["border", "border-divider-main"],
                 className,
             )}
             {...props}>

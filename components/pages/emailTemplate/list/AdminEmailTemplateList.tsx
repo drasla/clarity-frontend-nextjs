@@ -103,7 +103,7 @@ function AdminEmailTemplateList({
                         return (
                             <TableRow
                                 key={template.id}
-                                href={`/admin/email-templates/${template.id}`}>
+                                href={`/admin/templates/email/${template.id}`}>
                                 <TableCell
                                     className={twMerge([
                                         "hidden",

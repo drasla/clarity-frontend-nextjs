@@ -9,8 +9,20 @@ query FindManyEmailTemplates($page: PageInput!, $search: EmailTemplateSearchInpu
     }
 }
 
+query FindOneEmailTemplateById($id: Int!) {
+    findOneEmailTemplateById(id: $id) {
+        ...EmailTemplate
+    }
+}
+
 mutation CreateEmailTemplate($input: CreateEmailTemplateInput!) {
     createEmailTemplate(input: $input) {
+        ...EmailTemplate
+    }
+}
+
+mutation ModifyEmailTemplate($id: Int!, $input: ModifyEmailTemplateInput!) {
+    modifyEmailTemplate(id: $id, input: $input) {
         ...EmailTemplate
     }
 }

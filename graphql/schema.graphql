@@ -99,7 +99,6 @@ type Mutation {
     confirmVerification(code: String!, target: String!, type: VerificationType!): Boolean!
     createEmailTemplate(input: CreateEmailTemplateInput!): EmailTemplate!
     createInquiry(input: CreateInquiryInput!): Inquiry!
-    deleteEmailTemplate(id: Int!): Boolean!
     deleteInquiry(id: Int!, password: String): Boolean!
     login(password: String!, username: String!): Token!
     modifyEmailTemplate(id: Int!, input: ModifyEmailTemplateInput!): EmailTemplate!
@@ -225,7 +224,6 @@ input CreateEmailTemplateInput {
     html: String!
     subject: String!
     templateCode: String!
-    variables: String
 }
 
 input CreateInquiryInput {
@@ -264,7 +262,6 @@ input ModifyEmailTemplateInput {
     html: String
     subject: String
     templateCode: String
-    variables: String
 }
 
 input ModifyInquiryInput {

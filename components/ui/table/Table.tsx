@@ -18,7 +18,6 @@ export const Table = ({ children, className }: TableProps) => {
                     "border",
                     "border-divider-main",
                     "rounded-2xl",
-                    "shadow-lg",
                 ],
                 ["overflow-hidden"],
                 className,

@@ -49,7 +49,7 @@ function SharedInquiryDetail({
             <div
                 className={twMerge(
                     ["bg-background-default", "border", "border-divider-main"],
-                    ["rounded-2xl", "overflow-hidden", "shadow-sm"],
+                    ["rounded-2xl", "overflow-hidden"],
                 )}>
                 <div
                     className={twMerge(
@@ -100,7 +100,7 @@ function SharedInquiryDetail({
                 <div
                     className={twMerge(
                         ["p-6", "md:p-8", "prose", "prose-sm", "sm:prose-base", "max-w-none"],
-                        ["text-text-primary", "min-h-50"],
+                        ["bg-background-paper", "text-text-primary", "min-h-50"],
                     )}
                     dangerouslySetInnerHTML={{ __html: inquiryData.content }}
                 />

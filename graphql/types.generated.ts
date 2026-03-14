@@ -57,7 +57,6 @@ export type CreateEmailTemplateInput = {
   html: Scalars['String']['input'];
   subject: Scalars['String']['input'];
   templateCode: Scalars['String']['input'];
-  variables?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type CreateInquiryInput = {
@@ -178,7 +177,6 @@ export type ModifyEmailTemplateInput = {
   html?: InputMaybe<Scalars['String']['input']>;
   subject?: InputMaybe<Scalars['String']['input']>;
   templateCode?: InputMaybe<Scalars['String']['input']>;
-  variables?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type ModifyInquiryInput = {
@@ -238,7 +236,6 @@ export type Mutation = {
   confirmVerification: Scalars['Boolean']['output'];
   createEmailTemplate: EmailTemplate;
   createInquiry: Inquiry;
-  deleteEmailTemplate: Scalars['Boolean']['output'];
   deleteInquiry: Scalars['Boolean']['output'];
   login: Token;
   modifyEmailTemplate: EmailTemplate;
@@ -278,11 +275,6 @@ export type MutationCreateEmailTemplateArgs = {
 
 export type MutationCreateInquiryArgs = {
   input: CreateInquiryInput;
-};
-
-
-export type MutationDeleteEmailTemplateArgs = {
-  id: Scalars['Int']['input'];
 };
 
 

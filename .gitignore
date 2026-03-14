@@ -136,3 +136,4 @@ dist
 next-env.d.ts
 
 .idea
+.email

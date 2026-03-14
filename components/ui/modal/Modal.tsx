@@ -103,7 +103,7 @@ export const Modal = ({
                 className={twMerge(
                     ["relative", "w-full", "flex", "flex-col"],
                     ["rounded-xl", "shadow-2xl", "border", "border-divider-main"],
-                    ["bg-background-default", "overflow-hidden"],
+                    ["bg-background-paper", "overflow-hidden"],
                     ["transition-all", "duration-200", "ease-in-out", "transform"],
                     isVisible
                         ? ["opacity-100", "scale-100", "translate-y-0"]
@@ -115,7 +115,7 @@ export const Modal = ({
                     <div
                         className={twMerge(
                             ["flex", "items-center", "justify-between", "px-5", "py-4"],
-                            ["border-b", "border-divider-main", "bg-background-paper"],
+                            ["border-b", "border-divider-main", "bg-background-background"],
                         )}>
                         <div
                             className={twMerge(

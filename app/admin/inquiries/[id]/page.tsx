@@ -125,7 +125,6 @@ export default function AdminInquiryDetailPage() {
                         onChange={html => setAnswerContent(html)}
                         enableImageUpload={true}
                         placeholder="답변 내용을 자세히 입력해주세요."
-                        className={"bg-background-default"}
                     />
                     <div className="mt-4 flex justify-end gap-3">
                         {isEditing && (

@@ -1,26 +1,35 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { twMerge } from "tailwind-merge";
+import dayjs from "dayjs";
 import EmailEditor, { EditorRef } from "react-email-editor";
 
+import { FindOneEmailTemplateByIdQuery } from "@/graphql/graphql.generated";
 import { Input } from "@/components/ui/input/Input";
 import { Button } from "@/components/ui/button/Button";
 import { AlertModal, AlertType } from "@/components/ui/modal/AlertModal";
 import {
-    CreateEmailTemplateSchema,
-    CreateEmailTemplateValues,
-} from "@/actions/emailTemplate/create/CreateEmailTemplateSchema";
-import CreateEmailTemplateAction from "@/actions/emailTemplate/create/CreateEmailTemplateAction";
+    ModifyEmailTemplateSchema,
+    ModifyEmailTemplateValues,
+} from "@/actions/emailTemplate/modify/ModifyEmailTemplateSchema";
+import ModifyEmailTemplateAction from "@/actions/emailTemplate/modify/ModifyEmailTemplateAction";
 import PageHeader from "@/components/ui/header/PageHeader";
 import Card from "@/components/ui/card/Card";
 
-export default function AdminEmailTemplateWrite() {
+type EmailTemplateData = FindOneEmailTemplateByIdQuery["findOneEmailTemplateById"];
+
+interface AdminEmailTemplateDetailProps {
+    initialData: EmailTemplateData;
+}
+
+function AdminEmailTemplateModify({ initialData }: AdminEmailTemplateDetailProps) {
     const router = useRouter();
     const emailEditorRef = useRef<EditorRef>(null);
+    const [isEditorLoaded, setIsEditorLoaded] = useState(false);
 
     const [alertConfig, setAlertConfig] = useState<{
         isOpen: boolean;
@@ -28,63 +37,77 @@ export default function AdminEmailTemplateWrite() {
         title: string;
         message: string;
         onClose: VoidFunction;
-    }>({
-        isOpen: false,
-        type: "none",
-        title: "",
-        message: "",
-        onClose: () => {},
-    });
+    }>({ isOpen: false, type: "none", title: "", message: "", onClose: () => {} });
 
     const {
         register,
         handleSubmit,
+        reset,
         formState: { errors, isSubmitting },
-    } = useForm<CreateEmailTemplateValues>({
-        resolver: zodResolver(CreateEmailTemplateSchema),
-        defaultValues: {
-            templateCode: "",
-            subject: "",
-            description: "",
-            html: "TEMP",
-            design: "{}"
-        },
+    } = useForm<ModifyEmailTemplateValues>({
+        resolver: zodResolver(ModifyEmailTemplateSchema),
     });
 
-    const onSubmit = async (data: CreateEmailTemplateValues) => {
-        const unlayer = emailEditorRef.current?.editor;
+    // 초기값 세팅
+    useEffect(() => {
+        if (initialData) {
+            reset({
+                templateCode: initialData.templateCode,
+                subject: initialData.subject,
+                description: initialData.description,
+            });
+        }
+    }, [initialData, reset]);
 
-        if (!unlayer) {
+    const handleEditorLoad = () => {
+        setIsEditorLoaded(true);
+        if (initialData?.design && initialData.design !== "TEMP") {
+            try {
+                const designJson = JSON.parse(initialData.design);
+
+                if (
+                    designJson &&
+                    typeof designJson === "object" &&
+                    Object.keys(designJson).length > 0
+                ) {
+                    emailEditorRef.current?.editor?.loadDesign(designJson);
+                }
+            } catch (error) {
+                console.error("디자인 JSON 파싱 실패 (기존 데이터가 유효하지 않음):", error);
+            }
+        }
+    };
+
+    const onSubmit = async (data: ModifyEmailTemplateValues) => {
+        const unlayer = emailEditorRef.current?.editor;
+        if (!unlayer || !isEditorLoaded) {
             return setAlertConfig({
                 isOpen: true,
                 type: "error",
                 title: "에디터 오류",
-                message: "에디터가 아직 로드되지 않았습니다. 잠시 후 다시 시도해주세요.",
+                message: "에디터가 아직 준비되지 않았습니다.",
                 onClose: () => setAlertConfig(prev => ({ ...prev, isOpen: false })),
             });
         }
 
         unlayer.exportHtml(async (exportData: { design: any; html: string }) => {
-            const { html } = exportData;
-
+            const { html, design } = exportData;
             const finalData = {
                 ...data,
                 html,
-                design: JSON.stringify(exportData.design),
+                design: JSON.stringify(design),
             };
 
             try {
-                const result = await CreateEmailTemplateAction(finalData);
-
+                const result = await ModifyEmailTemplateAction(initialData.id, finalData);
                 if (result.success) {
                     setAlertConfig({
                         isOpen: true,
                         type: "success",
-                        title: "생성 완료",
-                        message: "새 이메일 템플릿이 성공적으로 저장되었습니다.",
+                        title: "수정 완료",
+                        message: "이메일 템플릿이 성공적으로 수정되었습니다.",
                         onClose: () => {
                             setAlertConfig(prev => ({ ...prev, isOpen: false }));
-                            router.push("/admin/templates/email");
                             router.refresh();
                         },
                     });
@@ -93,8 +116,8 @@ export default function AdminEmailTemplateWrite() {
                 setAlertConfig({
                     isOpen: true,
                     type: "error",
-                    title: "생성 실패",
-                    message: error.message || "템플릿 저장 중 오류가 발생했습니다.",
+                    title: "수정 실패",
+                    message: error.message,
                     onClose: () => setAlertConfig(prev => ({ ...prev, isOpen: false })),
                 });
             }
@@ -104,8 +127,8 @@ export default function AdminEmailTemplateWrite() {
     return (
         <div className={twMerge(["w-full", "max-w-6xl", "mx-auto"])}>
             <PageHeader
-                title="새 이메일 템플릿 작성"
-                description="드래그 앤 드롭으로 모든 기기에서 완벽하게 보이는 이메일을 디자인하세요."
+                title="이메일 템플릿 수정"
+                description={`최종 수정: ${dayjs(initialData.updatedAt).format("YYYY-MM-DD HH:mm")} | 등록: ${dayjs(initialData.createdAt).format("YYYY-MM-DD HH:mm")}`}
                 action={
                     <Button
                         type="button"
@@ -133,16 +156,21 @@ export default function AdminEmailTemplateWrite() {
                         <Input
                             label="템플릿 코드"
                             fullWidth
-                            placeholder="예: WELCOME_EMAIL, PW_RESET"
                             error={!!errors.templateCode}
                             helperText={errors.templateCode?.message}
                             {...register("templateCode")}
+                        />
+                        <Input
+                            label="사용 가능한 변수 (백엔드 제공)"
+                            fullWidth
+                            readOnly
+                            disabled
+                            value={initialData.variables || "등록된 변수가 없습니다."}
                         />
                         <div className={twMerge(["md:col-span-2"])}>
                             <Input
                                 label="메일 제목"
                                 fullWidth
-                                placeholder="고객에게 표시될 실제 이메일 제목입니다."
                                 error={!!errors.subject}
                                 helperText={errors.subject?.message}
                                 {...register("subject")}
@@ -152,7 +180,6 @@ export default function AdminEmailTemplateWrite() {
                             <Input
                                 label="설명 (관리자용)"
                                 fullWidth
-                                placeholder="이 템플릿이 언제 어떻게 발송되는지 간단히 메모해두세요."
                                 error={!!errors.description}
                                 helperText={errors.description?.message}
                                 {...register("description")}
@@ -169,22 +196,26 @@ export default function AdminEmailTemplateWrite() {
                         )}>
                         이메일 디자인
                     </div>
-                    <div className={twMerge(["w-full", "flex", "flex-col", "h-175", "bg-[#f5f5f5]"])}>
+                    <div
+                        className={twMerge(["w-full", "flex", "flex-col", "bg-[#f5f5f5]"])}
+                        style={{ height: "700px" }}>
                         <EmailEditor
                             ref={emailEditorRef}
                             minHeight={700}
-                            style={{ flex: 1, height: "100%", width: "100%" }}
-                            options={{
-                                locale: "ko-KR",
-                            }}
+                            style={{ flex: 1, width: "100%", height: "100%" }}
+                            onLoad={handleEditorLoad}
+                            options={{ locale: "ko-KR" }}
                         />
                     </div>
                 </Card>
 
                 <Card>
                     <div className={twMerge(["flex", "items-center", "justify-end"])}>
-                        <Button type="submit" disabled={isSubmitting}>
-                            {isSubmitting ? "저장 중..." : "템플릿 저장"}
+                        <Button
+                            type="submit"
+                            size="large"
+                            disabled={isSubmitting || !isEditorLoaded}>
+                            {isSubmitting ? "저장 중..." : "수정 완료"}
                         </Button>
                     </div>
                 </Card>
@@ -201,3 +232,5 @@ export default function AdminEmailTemplateWrite() {
         </div>
     );
 }
+
+export default AdminEmailTemplateModify;
